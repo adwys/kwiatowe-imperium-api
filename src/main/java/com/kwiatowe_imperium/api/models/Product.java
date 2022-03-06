@@ -1,8 +1,12 @@
 package com.kwiatowe_imperium.api.models;
 
+
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -10,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table
 @RequiredArgsConstructor
-public class UserModel {
+public class Product implements Serializable {
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -24,15 +28,14 @@ public class UserModel {
     private Long id;
     @NonNull
     private String name;
+    @Nullable
+    private String description;
     @NonNull
-    private String surname;
-    @NonNull
-    private String email;
-    @NonNull
-    private String username;
-    @NonNull
-    private String password; // Should be encoded
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "veterinar")
-//    private List<ClientModel> clients;
+    private BigDecimal price;
+
+    public void updateFrom(final Product source) {
+        name = source.name;
+        description = source.description;
+        price = source.price;
+    }
 }

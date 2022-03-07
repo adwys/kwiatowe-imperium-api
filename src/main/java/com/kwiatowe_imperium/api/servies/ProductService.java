@@ -46,7 +46,7 @@ public class ProductService {
                     product.updateFrom(model);
                     repository.save(product);
                 });
-        return new ResponseEntity<>("product updated", HttpStatus.OK);
+        return new ResponseEntity<>(model, HttpStatus.OK);
 
     }
     public ResponseEntity<?> deleteProduct(Long id){
@@ -54,8 +54,9 @@ public class ProductService {
             return ResponseEntity.notFound().build();
         }
         String name = repository.findById(id).get().getName();
+        Product toReturn = repository.getById(id);
         repository.deleteById(id);
-        return new ResponseEntity<>("Product " + name +" deleted", HttpStatus.OK);
+        return new ResponseEntity<>(toReturn, HttpStatus.OK);
     }
 
 }

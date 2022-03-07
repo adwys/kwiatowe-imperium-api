@@ -21,7 +21,7 @@ public class ProductService {
 
     public ResponseEntity<?> createProduct(Product product){
         repository.save(product);
-        return new ResponseEntity<>("Product created", HttpStatus.OK);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     public ResponseEntity<?> readProduct(Long id){

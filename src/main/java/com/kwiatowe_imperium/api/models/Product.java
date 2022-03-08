@@ -34,15 +34,14 @@ public class Product implements Serializable {
     private String description;
     @NonNull
     private BigDecimal price;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "teacher")
-    private Set<Image> images;
+    @OneToMany(mappedBy = "product")
+    public Set<Image> images;
 
 
     public void updateFrom(final Product source) {
         name = source.name;
         description = source.description;
         price = source.price;
+        images = source.images;
     }
 }

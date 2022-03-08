@@ -13,6 +13,14 @@ public class ProductController {
 
     private final ProductService service;
 
+    @RequestMapping(value = "/api/product/{product_id}/images/{image_id}", method = RequestMethod.POST)
+    public ResponseEntity<?> addTo(
+            @PathVariable Long product_id,
+            @PathVariable Long image_id
+    ){
+        return service.addTo(product_id,image_id);
+    }
+
     @RequestMapping(value = "/api/product", method = RequestMethod.POST)
     public ResponseEntity<?> createProduct(@RequestBody Product request){
         return service.createProduct(request);

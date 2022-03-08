@@ -27,7 +27,7 @@ public class Image implements Serializable {
     @NonNull
     String URL;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 

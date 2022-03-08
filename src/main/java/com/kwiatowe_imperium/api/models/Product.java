@@ -1,12 +1,14 @@
 package com.kwiatowe_imperium.api.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Data
@@ -32,6 +34,11 @@ public class Product implements Serializable {
     private String description;
     @NonNull
     private BigDecimal price;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "teacher")
+    private Set<Image> images;
+
 
     public void updateFrom(final Product source) {
         name = source.name;

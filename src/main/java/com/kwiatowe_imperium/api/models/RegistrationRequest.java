@@ -1,15 +1,24 @@
 package com.kwiatowe_imperium.api.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 
-@AllArgsConstructor
+import java.io.Serializable;
+
 @Data
-public class RegistrationRequest {
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegistrationRequest implements Serializable {
 
-    private final String name;
-    private final String surname;
-    private final String email;
-    private final String username;
-    private final String password;
+    private String name;
+    private String surname;
+    private String email;
+    private String username;
+    private String password;
+
+
 }

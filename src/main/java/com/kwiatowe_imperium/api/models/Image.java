@@ -1,9 +1,13 @@
 package com.kwiatowe_imperium.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,7 +23,7 @@ public class Image implements Serializable {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "user_sequence"
     )
     private Long id;
@@ -27,11 +31,17 @@ public class Image implements Serializable {
     @NonNull
     String URL;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne()
+    @JoinTable(
+            name = "products",
+            joinColumns = @JoinColumn(name = "image_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    @JsonIgnore
     private Product product;
 
     public void updateFrom(final Image source) {
+        id = source.id;
         product = source.product;
         URL = source.URL;
     }

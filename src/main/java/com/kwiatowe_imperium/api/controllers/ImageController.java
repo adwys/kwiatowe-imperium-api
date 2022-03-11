@@ -15,12 +15,16 @@ public class ImageController {
 
     private final ImageService service;
 
+    @RequestMapping(value = "/api/image/product/{product_id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductImages(@PathVariable Long product_id){
+        return service.getAllProductImages(product_id);
+    }
 
     @RequestMapping(value = "/api/image", method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody Image request){
         return service.create(request);
     }
-    @RequestMapping(value = "/api/image/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/image/all", method = RequestMethod.GET,params = {"!sort", "!page", "!size"})
     ResponseEntity<?> findAll(){
         return service.readAll();
     }

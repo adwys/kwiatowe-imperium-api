@@ -11,6 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class ProductService {
@@ -23,15 +27,12 @@ public class ProductService {
         return ResponseEntity.ok(repository.findAll());
     }
 
-    public ResponseEntity<?> addTo(Long parent_id, Long child_id){
-        Image image = imageRepository.findById(child_id).get();
+    public ResponseEntity<?> addImageToProduct(Long parent_id, Long child_id){
+        Image sourceImage = imageRepository.findById(child_id).get();
         Product product = repository.findById(parent_id).get();
-        product.images.add(image);
-//        image.setProduct(product);
-        updateProduct(parent_id,product);
-//        imageRepository.save(image);
-//        return ResponseEntity.ok();
-        return new ResponseEntity<>(repository.findById(parent_id), HttpStatus.OK);
+        sourceImage.setProduct(product);
+        imageRepository.save(sourceImage);
+        return new ResponseEntity<>(sourceImage, HttpStatus.OK);
     }
 
 

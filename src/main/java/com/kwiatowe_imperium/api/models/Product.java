@@ -8,6 +8,8 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,7 +26,7 @@ public class Product implements Serializable {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "user_sequence"
     )
     private Long id;
@@ -35,7 +37,8 @@ public class Product implements Serializable {
     @NonNull
     private BigDecimal price;
     @OneToMany(mappedBy = "product")
-    public Set<Image> images;
+
+    public List<Image> images;
 
 
     public void updateFrom(final Product source) {

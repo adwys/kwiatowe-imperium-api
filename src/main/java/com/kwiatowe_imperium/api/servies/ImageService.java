@@ -6,9 +6,12 @@ import com.kwiatowe_imperium.api.models.Product;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +19,14 @@ public class ImageService {
 
     private final ImageRepository repository;
 
+//    public ResponseEntity<?> getInfo() {
+//        return new ResponseEntity<>(repository.getInfo(),HttpStatus.OK);
+//    }
+
+    public ResponseEntity<?> getAllProductImages(Long product_id){
+        List<Image> imgs = repository.findByProductId(product_id);
+        return new ResponseEntity<>(imgs, HttpStatus.OK);
+    }
 
     public ResponseEntity<?> readAll(){
         return ResponseEntity.ok(repository.findAll());

@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -23,22 +26,20 @@ public class ImageService {
 
     private final ImageRepository repository;
 
-    public String loadImage(Long id){
-        Image image = repository.findById(id).get();
+    public ResponseEntity<?> saveToDB(MultipartFile file,String name){
 
-        return "<img src=\"data:image/png;base64, "+ image.getImg() +"\">";
-    }
+        File newfile = new File("src/main/resources/static/"+name);
+        try (OutputStream os = new FileOutputStream(newfile)) {
+            os.write(file.getBytes());
+            Image image = new Image();
 
-    public ResponseEntity<?> saveToDB(MultipartFile file){
-        Image image = new Image();
-        try{
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            image.setImg(Base64.getEncoder().encodeToString(file.getBytes()));
+            image.setURL("http://localhost:8080/"+name);
+            create(image);
         }catch (Exception e){
-            System.out.println("err");
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
         }
-        repository.save(image);
-        return new ResponseEntity<>(image, HttpStatus.OK);
+
+        return new ResponseEntity<>("saved", HttpStatus.OK);
     }
 
     public ResponseEntity<?> getAllProductImages(Long product_id){

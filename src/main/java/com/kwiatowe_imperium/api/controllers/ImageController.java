@@ -24,13 +24,10 @@ public class ImageController {
     }
 
     @RequestMapping(value = "/api/image/db", method = RequestMethod.POST)
-    public ResponseEntity<?> createDB(@RequestParam("file") MultipartFile file){
-        return service.saveToDB(file);
-    }
-
-    @RequestMapping(value = "/api/image/{id}/file", method = RequestMethod.GET)
-    public String loadFile(@PathVariable Long id){
-        return service.loadImage(id);
+    public ResponseEntity<?> createDB(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("name") String name){
+        return service.saveToDB(file,name);
     }
 
     @RequestMapping(value = "/api/image", method = RequestMethod.POST)

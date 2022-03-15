@@ -16,6 +16,7 @@ import java.util.Set;
 @Table
 @RequiredArgsConstructor
 public class Image implements Serializable {
+
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -30,9 +31,7 @@ public class Image implements Serializable {
 
     @NonNull
     String URL;
-    @Lob
-    @Column(length = 16777215)
-    private String img;
+
     @ManyToOne()
     @JoinTable(
             name = "products",

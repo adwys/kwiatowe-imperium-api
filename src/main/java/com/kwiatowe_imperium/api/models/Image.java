@@ -30,7 +30,9 @@ public class Image implements Serializable {
 
     @NonNull
     String URL;
-
+    @Lob
+    @Column(length = 16777215)
+    private String img;
     @ManyToOne()
     @JoinTable(
             name = "products",

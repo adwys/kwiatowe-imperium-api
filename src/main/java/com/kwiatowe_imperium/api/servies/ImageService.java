@@ -10,8 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -19,9 +23,23 @@ public class ImageService {
 
     private final ImageRepository repository;
 
-//    public ResponseEntity<?> getInfo() {
-//        return new ResponseEntity<>(repository.getInfo(),HttpStatus.OK);
-//    }
+    public String loadImage(Long id){
+        Image image = repository.findById(id).get();
+
+        return "<img src=\"data:image/png;base64, "+ image.getImg() +"\">";
+    }
+
+    public ResponseEntity<?> saveToDB(MultipartFile file){
+        Image image = new Image();
+        try{
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            image.setImg(Base64.getEncoder().encodeToString(file.getBytes()));
+        }catch (Exception e){
+            System.out.println("err");
+        }
+        repository.save(image);
+        return new ResponseEntity<>(image, HttpStatus.OK);
+    }
 
     public ResponseEntity<?> getAllProductImages(Long product_id){
         List<Image> imgs = repository.findByProductId(product_id);

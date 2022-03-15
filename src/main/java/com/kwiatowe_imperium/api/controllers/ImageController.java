@@ -8,6 +8,7 @@ import com.kwiatowe_imperium.api.servies.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -15,9 +16,21 @@ public class ImageController {
 
     private final ImageService service;
 
+
+
     @RequestMapping(value = "/api/image/product/{product_id}", method = RequestMethod.GET)
     public ResponseEntity<?> getProductImages(@PathVariable Long product_id){
         return service.getAllProductImages(product_id);
+    }
+
+    @RequestMapping(value = "/api/image/db", method = RequestMethod.POST)
+    public ResponseEntity<?> createDB(@RequestParam("file") MultipartFile file){
+        return service.saveToDB(file);
+    }
+
+    @RequestMapping(value = "/api/image/{id}/file", method = RequestMethod.GET)
+    public String loadFile(@PathVariable Long id){
+        return service.loadImage(id);
     }
 
     @RequestMapping(value = "/api/image", method = RequestMethod.POST)

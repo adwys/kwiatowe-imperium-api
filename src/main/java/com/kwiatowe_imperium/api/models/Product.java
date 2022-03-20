@@ -30,15 +30,23 @@ public class Product implements Serializable {
             generator = "user_sequence"
     )
     private Long id;
+
     @NonNull
     private String name;
+
     @Nullable
     private String description;
+
     @NonNull
     private BigDecimal price;
-    @OneToMany(mappedBy = "product")
 
+    @OneToMany(mappedBy = "product")
     public List<Image> images;
+
+    @ManyToOne()
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Category category;
 
 
     public void updateFrom(final Product source) {

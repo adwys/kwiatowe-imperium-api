@@ -24,7 +24,7 @@ public class Image implements Serializable {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
+            strategy = GenerationType.AUTO,
             generator = "user_sequence"
     )
     private Long id;

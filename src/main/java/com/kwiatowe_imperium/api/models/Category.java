@@ -30,8 +30,8 @@ public class Category implements Serializable {
 
     private Boolean is_visible;
 
-    @OneToMany(targetEntity=Product.class,mappedBy = "category")
-    private List<Product> products;
+    @ManyToMany(mappedBy = "categories")
+    public List<Product> products;
 
     public void updateFrom(final Category source) {
         id = source.id;

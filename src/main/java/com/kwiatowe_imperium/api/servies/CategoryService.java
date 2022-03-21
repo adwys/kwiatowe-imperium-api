@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CategoryService {
@@ -26,9 +28,10 @@ public class CategoryService {
     public ResponseEntity<?> addTo(Long parent_id, Long child_id){
         Product source = productRepository.findById(child_id).get();
         Category category = repository.findById(parent_id).get();
-        source.setCategory(category);
-        productRepository.save(source);
-        return new ResponseEntity<>(source, HttpStatus.OK);
+        category.products.add(source);
+        source.categories.add(category);
+        repository.save(category);
+        return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
     public ResponseEntity<?> create(Category item) {

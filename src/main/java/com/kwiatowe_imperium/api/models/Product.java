@@ -43,10 +43,10 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     public List<Image> images;
 
-    @ManyToOne()
+    @ManyToMany
     @JoinColumn(name = "product_id",referencedColumnName = "id")
     @JsonIgnore
-    private Category category;
+    public List<Category> categories;
 
 
     public void updateFrom(final Product source) {

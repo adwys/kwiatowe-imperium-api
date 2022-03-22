@@ -1,9 +1,7 @@
 package com.kwiatowe_imperium.api.servies;
 
 
-import com.kwiatowe_imperium.api.models.Category;
-import com.kwiatowe_imperium.api.models.Image;
-import com.kwiatowe_imperium.api.models.Product;
+import com.kwiatowe_imperium.api.models.*;
 import com.kwiatowe_imperium.api.repo.CategoryRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -12,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,8 +20,17 @@ public class CategoryService {
 
     private ProductRepository productRepository;
 
-    public ResponseEntity<?> readAll() {
-        return ResponseEntity.ok(repository.findAll());
+    public ResponseEntity<?> readAll(String lang) {
+        if(lang.equals("eng")){
+            return new ResponseEntity<>(repository.findAll()
+                    .stream()
+                    .map(CategoryService::MapToEng)
+                    .collect(Collectors.toList()),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(repository.findAll()
+                .stream()
+                .map(CategoryService::MapToPl)
+                .collect(Collectors.toList()),HttpStatus.OK);
     }
 
     public ResponseEntity<?> addTo(Long parent_id, Long child_id){
@@ -39,10 +47,17 @@ public class CategoryService {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> read(Long id) {
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
+    public ResponseEntity<?> read(Long id,String lang) {
+        if(lang.equals("eng")){
+            return new ResponseEntity<>(repository.findById(id)
+                    .stream()
+                    .map(CategoryService::MapToEng)
+                    .collect(Collectors.toList()),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(repository.findById(id)
+                .stream()
+                .map(CategoryService::MapToPl)
+                .collect(Collectors.toList()),HttpStatus.OK);
     }
 
     public ResponseEntity<?> update(Long id, Category toUpdate) {
@@ -74,4 +89,26 @@ public class CategoryService {
         return new ResponseEntity<>(toReturn, HttpStatus.OK);
 
     }
+
+    public static CategoryDTO MapToPl(Category c){
+        return new CategoryDTO(
+                c.getId(),
+                c.getNamePl(),
+                c.getIs_visible(),
+                c.getProducts().stream()
+                        .map(ProductService::MapToPl)
+                        .collect(Collectors.toList()));
+    }
+
+    public static CategoryDTO MapToEng(Category c){
+        return new CategoryDTO(
+                c.getId(),
+                c.getNameEn(),
+                c.getIs_visible(),
+                c.getProducts().stream()
+                        .map(ProductService::MapToEng)
+                        .collect(Collectors.toList()));
+    }
+
+
 }

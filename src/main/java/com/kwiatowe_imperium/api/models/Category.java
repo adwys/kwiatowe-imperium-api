@@ -19,14 +19,15 @@ import java.util.List;
 public class Category implements Serializable {
 
     @Id
-
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
 
     @NotNull
-    private String name;
+    private String namePl;
+    @NotNull
+    private String nameEn;
 
     private Boolean is_visible;
 
@@ -35,7 +36,8 @@ public class Category implements Serializable {
 
     public void updateFrom(final Category source) {
         id = source.id;
-        name = source.name;
+        nameEn = source.nameEn;
+        namePl = source.namePl;
         is_visible = source.is_visible;
         products = source.products;
     }

@@ -24,24 +24,25 @@ public class ProductService {
 
     private final ImageRepository imageRepository;
 
+
     public  ResponseEntity<?> readAllProduct(String lang){
         if(lang.equals("eng")){
             return new ResponseEntity<>(repository.findAll()
                     .stream()
-                    .map(this::MapToEng)
+                    .map(ProductService::MapToEng)
                     .collect(Collectors.toList()),HttpStatus.OK);
         }
         return new ResponseEntity<>(repository.findAll()
                 .stream()
-                .map(this::MapToPl)
+                .map(ProductService::MapToPl)
                 .collect(Collectors.toList()),HttpStatus.OK);
     }
 
-    private ProductDTO MapToPl(Product p){
+    public static ProductDTO MapToPl(Product p){
         return new ProductDTO(p.getId(),p.getNamePl(),p.getDescriptionPl(),p.getPrice(),p.getImages());
     }
 
-    private ProductDTO MapToEng(Product p){
+    public static ProductDTO MapToEng(Product p){
         return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionEn(),p.getPrice(),p.getImages());
     }
 
@@ -55,25 +56,25 @@ public class ProductService {
 
 
 
-    public ResponseEntity<?> createProduct(Product product){
+    public ResponseEntity<?> create(Product product){
         repository.save(product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> readProduct(Long id,String lang){
+    public ResponseEntity<?> read(Long id, String lang){
         if(lang.equals("eng")){
             return new ResponseEntity<>(repository.findById(id)
                     .stream()
-                    .map(this::MapToEng)
+                    .map(ProductService::MapToEng)
                     .collect(Collectors.toList()),HttpStatus.OK);
         }
         return new ResponseEntity<>(repository.findById(id)
                 .stream()
-                .map(this::MapToPl)
+                .map(ProductService::MapToPl)
                 .collect(Collectors.toList()),HttpStatus.OK);
     }
 
-    public ResponseEntity<?> updateProduct(Long id,Product toUpdate){
+    public ResponseEntity<?> update(Long id, Product toUpdate){
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
@@ -92,7 +93,7 @@ public class ProductService {
         return new ResponseEntity<>(model, HttpStatus.OK);
 
     }
-    public ResponseEntity<?> deleteProduct(Long id){
+    public ResponseEntity<?> delete(Long id){
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

@@ -24,26 +24,26 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/api/category", method = RequestMethod.POST)
-    public ResponseEntity<?> createProduct(@RequestBody Category request){
+    public ResponseEntity<?> create(@RequestBody Category request){
         return service.create(request);
     }
     @RequestMapping(value = "/api/category/all", method = RequestMethod.GET,params = {"!sort", "!page", "!size"})
-    ResponseEntity<?> findAllProduct(){
-        return service.readAll();
+    ResponseEntity<?> findAll(@RequestHeader("accept-language") String lang){
+        return service.readAll(lang);
     }
 
     @RequestMapping(value = "/api/category/{id}", method = RequestMethod.GET)
-    ResponseEntity<?> findProduct(@PathVariable Long id){
-        return service.read(id);
+    ResponseEntity<?> find(@PathVariable Long id, @RequestHeader("accept-language") String lang){
+        return service.read(id,lang);
     }
 
     @RequestMapping(value = "/api/category/{id}", method = RequestMethod.DELETE)
-    ResponseEntity<?> deleteProduct(@PathVariable Long id){
+    ResponseEntity<?> delete(@PathVariable Long id){
         return service.delete(id);
     }
 
     @RequestMapping(value = "/api/category/{id}", method = RequestMethod.PATCH)
-    ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Category category){
+    ResponseEntity<?> update(@PathVariable Long id, @RequestBody Category category){
         return service.update(id,category);
     }
 

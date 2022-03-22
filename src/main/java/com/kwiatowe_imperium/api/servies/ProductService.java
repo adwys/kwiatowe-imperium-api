@@ -28,20 +28,20 @@ public class ProductService {
         if(lang.equals("eng")){
             return new ResponseEntity<>(repository.findAll()
                     .stream()
-                    .map(this::MaptoEng)
+                    .map(this::MapToEng)
                     .collect(Collectors.toList()),HttpStatus.OK);
         }
         return new ResponseEntity<>(repository.findAll()
                 .stream()
-                .map(this::MaptoPl)
+                .map(this::MapToPl)
                 .collect(Collectors.toList()),HttpStatus.OK);
     }
 
-    private ProductDTO MaptoPl(Product p){
+    private ProductDTO MapToPl(Product p){
         return new ProductDTO(p.getId(),p.getNamePl(),p.getDescriptionPl(),p.getPrice(),p.getImages());
     }
 
-    private ProductDTO MaptoEng(Product p){
+    private ProductDTO MapToEng(Product p){
         return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionEn(),p.getPrice(),p.getImages());
     }
 
@@ -60,10 +60,17 @@ public class ProductService {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> readProduct(Long id){
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
+    public ResponseEntity<?> readProduct(Long id,String lang){
+        if(lang.equals("eng")){
+            return new ResponseEntity<>(repository.findById(id)
+                    .stream()
+                    .map(this::MapToEng)
+                    .collect(Collectors.toList()),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(repository.findById(id)
+                .stream()
+                .map(this::MapToPl)
+                .collect(Collectors.toList()),HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateProduct(Long id,Product toUpdate){

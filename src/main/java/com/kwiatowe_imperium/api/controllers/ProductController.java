@@ -34,8 +34,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)
-    ResponseEntity<?> findProduct(@PathVariable Long id){
-        return service.readProduct(id);
+    ResponseEntity<?> findProduct(@PathVariable Long id,@RequestHeader("accept-language") String lang){
+        return service.readProduct(id,lang);
     }
 
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.DELETE)

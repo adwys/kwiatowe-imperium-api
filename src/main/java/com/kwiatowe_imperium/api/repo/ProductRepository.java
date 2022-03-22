@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
-//    List<Product> findAll();
+//    @Query(value ="SELECT p.id,p.name FROM Product p",nativeQuery = true)
+    List<Product> findAll();
+
 //    Page<Product> findAll(Pageable page);
 }

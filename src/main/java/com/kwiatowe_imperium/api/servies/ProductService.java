@@ -3,6 +3,7 @@ package com.kwiatowe_imperium.api.servies;
 
 import com.kwiatowe_imperium.api.models.Image;
 import com.kwiatowe_imperium.api.models.Product;
+import com.kwiatowe_imperium.api.models.ProductDTO;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,25 @@ public class ProductService {
 
     private final ImageRepository imageRepository;
 
-    public  ResponseEntity<?> readAllProduct(){
-        return ResponseEntity.ok(repository.findAll());
+    public  ResponseEntity<?> readAllProduct(String lang){
+        if(lang.equals("eng")){
+            return new ResponseEntity<>(repository.findAll()
+                    .stream()
+                    .map(this::MaptoEng)
+                    .collect(Collectors.toList()),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(repository.findAll()
+                .stream()
+                .map(this::MaptoPl)
+                .collect(Collectors.toList()),HttpStatus.OK);
+    }
+
+    private ProductDTO MaptoPl(Product p){
+        return new ProductDTO(p.getId(),p.getNamePl(),p.getDescriptionPl(),p.getPrice(),p.getImages());
+    }
+
+    private ProductDTO MaptoEng(Product p){
+        return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionEn(),p.getPrice(),p.getImages());
     }
 
     public ResponseEntity<?> addImageToProduct(Long parent_id, Long child_id){

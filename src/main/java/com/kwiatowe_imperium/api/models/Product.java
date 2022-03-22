@@ -32,10 +32,15 @@ public class Product implements Serializable {
     private Long id;
 
     @NonNull
-    private String name;
+    private String nameEn;
+
+    @NonNull
+    private String namePl;
 
     @Nullable
-    private String description;
+    private String descriptionEn;
+    @Nullable
+    private String descriptionPl;
 
     @NonNull
     private BigDecimal price;
@@ -50,8 +55,10 @@ public class Product implements Serializable {
 
 
     public void updateFrom(final Product source) {
-        name = source.name;
-        description = source.description;
+        nameEn = source.nameEn;
+        namePl = source.namePl;
+        descriptionEn = source.descriptionEn;
+        descriptionPl = source.descriptionPl;
         price = source.price;
         images = source.images;
     }

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @AllArgsConstructor
 public class ProductController {
@@ -23,12 +25,12 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/api/product", method = RequestMethod.POST)
-    public ResponseEntity<?> createProduct(@RequestBody Product request){
+    public ResponseEntity<?> createProduct( @RequestBody Product request){
         return service.createProduct(request);
     }
-    @RequestMapping(value = "/api/product/all", method = RequestMethod.GET,params = {"!sort", "!page", "!size"})
-    ResponseEntity<?> findAllProduct(){
-        return service.readAllProduct();
+    @RequestMapping(value = "/api/product/all", method = RequestMethod.GET)
+    ResponseEntity<?> findAllProduct(@RequestHeader("accept-language") String lang){
+        return service.readAllProduct(lang);
     }
 
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)

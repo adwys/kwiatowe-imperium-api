@@ -23,6 +23,11 @@ public class CategoryController {
         return new ResponseEntity<>(service.addTo(category_id,product_id), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/category/name/{name}", method = RequestMethod.GET)
+    public ResponseEntity<?> readByName(@PathVariable String name){
+        return service.readByName(name);
+    }
+
     @RequestMapping(value = "/api/category", method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody Category request){
         return service.create(request);

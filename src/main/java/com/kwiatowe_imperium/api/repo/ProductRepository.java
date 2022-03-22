@@ -1,5 +1,6 @@
 package com.kwiatowe_imperium.api.repo;
 
+import com.kwiatowe_imperium.api.models.Category;
 import com.kwiatowe_imperium.api.models.Product;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
 //    @Query(value ="SELECT p.id,p.name FROM Product p",nativeQuery = true)
     List<Product> findAll();
-
-//    Page<Product> findAll(Pageable page);
+    Product findByNameEn(String nameEn);
+    Product findByNamePl(String namePl);
 }

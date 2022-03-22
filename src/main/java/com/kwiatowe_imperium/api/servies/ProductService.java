@@ -24,6 +24,21 @@ public class ProductService {
 
     private final ImageRepository imageRepository;
 
+    public ResponseEntity<?> readByName(String name){
+        try {
+            if(repository.findByNameEn(name) != null){
+                return new ResponseEntity<>(repository.findByNameEn(name), HttpStatus.OK);
+            }
+            if(repository.findByNamePl(name) != null){
+                return new ResponseEntity<>(repository.findByNamePl(name), HttpStatus.OK);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("more than one item with this name",HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
 
     public  ResponseEntity<?> readAllProduct(String lang){
         if(lang.equals("en")){

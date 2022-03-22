@@ -14,6 +14,11 @@ public class ProductController {
 
     private final ProductService service;
 
+    @RequestMapping(value = "/api/product/name/{name}", method = RequestMethod.GET)
+    public ResponseEntity<?> readByName(@PathVariable String name){
+        return service.readByName(name);
+    }
+
     @RequestMapping(value = "/api/product/{product_id}/image/{image_id}", method = RequestMethod.PUT)
     public ResponseEntity<?> addTo(
             @PathVariable Long product_id,

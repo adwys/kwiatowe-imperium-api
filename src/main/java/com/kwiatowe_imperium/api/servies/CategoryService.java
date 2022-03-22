@@ -5,6 +5,7 @@ import com.kwiatowe_imperium.api.models.*;
 import com.kwiatowe_imperium.api.repo.CategoryRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,22 @@ public class CategoryService {
     private CategoryRepository repository;
 
     private ProductRepository productRepository;
+
+    public ResponseEntity<?> readByName(String name){
+        try {
+            if (repository.findByNameEn(name) != null) {
+                return new ResponseEntity<>(repository.findByNameEn(name)
+                        , HttpStatus.OK);
+            }
+            if (repository.findByNamePl(name) != null) {
+                return new ResponseEntity<>(repository.findByNamePl(name), HttpStatus.OK);
+            }
+        }catch (Exception e){
+        return new ResponseEntity<>("more than one item with this name",HttpStatus.BAD_REQUEST);
+    }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
 
     public ResponseEntity<?> readAll(String lang) {
         if(lang.equals("en")){

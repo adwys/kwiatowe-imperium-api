@@ -4,7 +4,6 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,7 +28,7 @@ public class Category implements Serializable {
     @NotNull
     private String nameEn;
 
-    private Boolean is_visible;
+    private Boolean isVisible;
 
     @ManyToMany(mappedBy = "categories")
     public List<Product> products;
@@ -38,7 +37,7 @@ public class Category implements Serializable {
         id = source.id;
         nameEn = source.nameEn;
         namePl = source.namePl;
-        is_visible = source.is_visible;
+        isVisible = source.isVisible;
         products = source.products;
     }
 

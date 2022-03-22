@@ -63,15 +63,15 @@ public class ProductService {
 
     public ResponseEntity<?> read(Long id, String lang){
         if(lang.equals("en")){
-            return new ResponseEntity<>(repository.findById(id)
-                    .stream()
+            return new ResponseEntity<>(
+                    repository.findById(id)
                     .map(ProductService::MapToEng)
-                    .collect(Collectors.toList()),HttpStatus.OK);
+                    ,HttpStatus.OK);
         }
-        return new ResponseEntity<>(repository.findById(id)
-                .stream()
+        return new ResponseEntity<>(
+                repository.findById(id)
                 .map(ProductService::MapToPl)
-                .collect(Collectors.toList()),HttpStatus.OK);
+                ,HttpStatus.OK);
     }
 
     public ResponseEntity<?> update(Long id, Product toUpdate){

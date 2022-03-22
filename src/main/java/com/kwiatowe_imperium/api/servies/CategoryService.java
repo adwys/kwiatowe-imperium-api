@@ -49,15 +49,15 @@ public class CategoryService {
 
     public ResponseEntity<?> read(Long id,String lang) {
         if(lang.equals("en")){
-            return new ResponseEntity<>(repository.findById(id)
-                    .stream()
+            return new ResponseEntity<>(
+                    repository.findById(id)
                     .map(CategoryService::MapToEng)
-                    .collect(Collectors.toList()),HttpStatus.OK);
+                    ,HttpStatus.OK);
         }
-        return new ResponseEntity<>(repository.findById(id)
-                .stream()
+        return new ResponseEntity<>(
+                repository.findById(id)
                 .map(CategoryService::MapToPl)
-                .collect(Collectors.toList()),HttpStatus.OK);
+                ,HttpStatus.OK);
     }
 
     public ResponseEntity<?> update(Long id, Category toUpdate) {

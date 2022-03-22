@@ -26,7 +26,7 @@ public class ProductService {
 
 
     public  ResponseEntity<?> readAllProduct(String lang){
-        if(lang.equals("eng")){
+        if(lang.equals("en")){
             return new ResponseEntity<>(repository.findAll()
                     .stream()
                     .map(ProductService::MapToEng)
@@ -62,7 +62,7 @@ public class ProductService {
     }
 
     public ResponseEntity<?> read(Long id, String lang){
-        if(lang.equals("eng")){
+        if(lang.equals("en")){
             return new ResponseEntity<>(repository.findById(id)
                     .stream()
                     .map(ProductService::MapToEng)

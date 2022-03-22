@@ -39,10 +39,13 @@ public class ProductService {
     }
 
     public static ProductDTO MapToPl(Product p){
+
         return new ProductDTO(p.getId(),p.getNamePl(),p.getDescriptionPl(),p.getPrice(),p.getImages());
     }
 
     public static ProductDTO MapToEng(Product p){
+        if(p.getDescriptionEn() == null)
+            return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionPl(),p.getPrice(),p.getImages());
         return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionEn(),p.getPrice(),p.getImages());
     }
 

@@ -22,17 +22,17 @@ public class CategoryService {
 
     public ResponseEntity<?> readByName(String name){
         try {
-            if (repository.findByNameEn(name) != null) {
-                return new ResponseEntity<>(MapToEng(repository.findByNameEn(name))
+            if (repository.findByNameEnIgnoreCase(name) != null) {
+                return new ResponseEntity<>(MapToEng(repository.findByNameEnIgnoreCase(name))
                         , HttpStatus.OK);
             }
-            if (repository.findByNamePl(name) != null) {
-                return new ResponseEntity<>(MapToPl(repository.findByNamePl(name)), HttpStatus.OK);
+            if (repository.findByNamePlIgnoreCase(name) != null) {
+                return new ResponseEntity<>(MapToPl(repository.findByNamePlIgnoreCase(name)), HttpStatus.OK);
             }
         }catch (Exception e){
         return new ResponseEntity<>("more than one item with this name",HttpStatus.BAD_REQUEST);
     }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 

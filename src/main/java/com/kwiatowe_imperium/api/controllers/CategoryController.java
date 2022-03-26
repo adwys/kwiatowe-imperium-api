@@ -24,8 +24,8 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/api/category/name/{name}", method = RequestMethod.GET)
-    public ResponseEntity<?> readByName(@PathVariable String name){
-        return service.readByName(name);
+    public ResponseEntity<?> readByName(@RequestHeader("accept-language") String lang,@PathVariable String name){
+        return service.readByName(lang,name);
     }
 
     @RequestMapping(value = "/api/category", method = RequestMethod.POST)

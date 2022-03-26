@@ -19,13 +19,22 @@ public class CategoryService {
 
     private ProductRepository productRepository;
 
-    public ResponseEntity<?> readByName(String name){
+    public ResponseEntity<?> readByName(String lang,String name){
+
         try {
             if (repository.findByNameEnIgnoreCase(name) != null) {
+                if(lang.equals("pl")){
+                    return new ResponseEntity<>(MapToPl(repository.findByNameEnIgnoreCase(name))
+                            , HttpStatus.OK);
+                }
                 return new ResponseEntity<>(MapToEng(repository.findByNameEnIgnoreCase(name))
                         , HttpStatus.OK);
             }
             if (repository.findByNamePlIgnoreCase(name) != null) {
+                if(lang.equals("en")){
+                    return new ResponseEntity<>(MapToEng(repository.findByNamePlIgnoreCase(name))
+                            , HttpStatus.OK);
+                }
                 return new ResponseEntity<>(MapToPl(repository.findByNamePlIgnoreCase(name)), HttpStatus.OK);
             }
         }catch (Exception e){

@@ -5,7 +5,6 @@ import com.kwiatowe_imperium.api.models.*;
 import com.kwiatowe_imperium.api.repo.CategoryRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,6 +33,19 @@ public class CategoryService {
     }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+    }
+
+    public ResponseEntity<?> readAllIfVisible(String lang) {
+        if(lang.equals("en")){
+            return new ResponseEntity<>(repository.findAllByVisibleIsTrue()
+                    .stream()
+                    .map(CategoryService::MapToEng)
+                    .collect(Collectors.toList()),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(repository.findAllByVisibleIsTrue()
+                .stream()
+                .map(CategoryService::MapToPl)
+                .collect(Collectors.toList()),HttpStatus.OK);
     }
 
     public ResponseEntity<?> readAll(String lang) {

@@ -37,6 +37,11 @@ public class CategoryController {
         return service.readAll(lang);
     }
 
+    @RequestMapping(value = "/api/category/allVisible", method = RequestMethod.GET,params = {"!sort", "!page", "!size"})
+    ResponseEntity<?> findAllVisible(@RequestHeader("accept-language") String lang){
+        return service.readAllIfVisible(lang);
+    }
+
     @RequestMapping(value = "/api/category/{id}", method = RequestMethod.GET)
     ResponseEntity<?> find(@PathVariable Long id, @RequestHeader("accept-language") String lang){
         return service.read(id,lang);

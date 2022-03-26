@@ -36,7 +36,7 @@ public class ProductService {
             return new ResponseEntity<>("more than one item with this name",HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 

@@ -110,7 +110,7 @@ public class CategoryService {
         return new CategoryDTO(
                 c.getId(),
                 c.getNamePl(),
-                c.getIsVisible(),
+                c.isVisible(),
                 c.getProducts().stream()
                         .map(ProductService::MapToPl)
                         .collect(Collectors.toList()));
@@ -120,7 +120,7 @@ public class CategoryService {
         return new CategoryDTO(
                 c.getId(),
                 c.getNameEn(),
-                c.getIsVisible(),
+                c.isVisible(),
                 c.getProducts().stream()
                         .map(ProductService::MapToEng)
                         .collect(Collectors.toList()));

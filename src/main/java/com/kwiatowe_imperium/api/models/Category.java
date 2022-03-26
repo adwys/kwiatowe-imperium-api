@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,7 +29,8 @@ public class Category implements Serializable {
     @NotNull
     private String nameEn;
 
-    private Boolean isVisible;
+//    @Type(type="true_false")
+    private boolean isVisible;
 
     @ManyToMany(mappedBy = "categories")
     public List<Product> products;

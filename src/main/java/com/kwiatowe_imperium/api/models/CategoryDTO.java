@@ -14,7 +14,7 @@ public class CategoryDTO {
 
     private Long id;
     private String name;
-    private Boolean is_visible;
+    private boolean is_visible;
     public List<ProductDTO> products;
 
 

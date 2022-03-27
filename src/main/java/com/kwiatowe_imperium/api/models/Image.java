@@ -2,6 +2,7 @@ package com.kwiatowe_imperium.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -40,6 +41,8 @@ public class Image implements Serializable {
     )
     @JsonIgnore
     private Product product;
+
+
 
     public void updateFrom(final Image source) {
         id = source.id;

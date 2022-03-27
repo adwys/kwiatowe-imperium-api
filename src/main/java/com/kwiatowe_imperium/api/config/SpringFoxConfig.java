@@ -26,8 +26,8 @@ public class SpringFoxConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Veterinarians app")
-                .description("REST API for helping veterinarians keep track of their appointments created using Spring Boot")
+                .title("Online flower shop app")
+                .description("REST API for managment of an online flower shop using Spring Boot")
                 .version("0.1")
                 .build();
     }

@@ -35,7 +35,7 @@ public class SecurityController {
     private final RegistrationService registrationService;
 
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
         try{
             authenticationManager.authenticate(
@@ -55,7 +55,7 @@ public class SecurityController {
     }
 
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
     public ResponseEntity<?> registerNewUser(@RequestBody RegistrationRequest request){
         return registrationService.register(request);
     }

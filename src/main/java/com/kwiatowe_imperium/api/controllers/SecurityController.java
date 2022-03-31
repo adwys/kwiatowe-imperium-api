@@ -8,15 +8,15 @@ import com.kwiatowe_imperium.api.servies.UserDetailsServices;
 import com.kwiatowe_imperium.api.utilis.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -59,4 +59,11 @@ public class SecurityController {
     public ResponseEntity<?> registerNewUser(@RequestBody RegistrationRequest request){
         return registrationService.register(request);
     }
+
+    @RequestMapping(value = "/auth/getUser",method = RequestMethod.GET)
+    private ResponseEntity<?> getUser(@RequestHeader("Authorization") String jwt){
+        return new ResponseEntity<>(userDetailsServices.getUserByToken(jwt), HttpStatus.OK);
+
+    }
+
 }

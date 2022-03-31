@@ -31,8 +31,5 @@ public class UserModel {
     @NonNull
     private String username;
     @NonNull
-    private String password; // Should be encoded
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "veterinar")
-//    private List<ClientModel> clients;
+    private String password;
 }

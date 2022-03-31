@@ -60,9 +60,9 @@ public class SecurityController {
         return registrationService.register(request);
     }
 
-    @RequestMapping(value = "/auth/getUser",method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/me",method = RequestMethod.GET)
     private ResponseEntity<?> getUser(@RequestHeader("Authorization") String jwt){
-        return new ResponseEntity<>(userDetailsServices.getUserByToken(jwt), HttpStatus.OK);
+        return userDetailsServices.getUserByToken(jwt);
 
     }
 

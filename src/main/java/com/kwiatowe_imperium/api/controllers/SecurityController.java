@@ -3,6 +3,7 @@ package com.kwiatowe_imperium.api.controllers;
 import com.kwiatowe_imperium.api.models.AuthenticationRequest;
 import com.kwiatowe_imperium.api.models.AuthenticationResponse;
 import com.kwiatowe_imperium.api.models.RegistrationRequest;
+import com.kwiatowe_imperium.api.models.UserModel;
 import com.kwiatowe_imperium.api.servies.RegistrationService;
 import com.kwiatowe_imperium.api.servies.UserDetailsServices;
 import com.kwiatowe_imperium.api.utilis.JwtUtil;
@@ -64,6 +65,11 @@ public class SecurityController {
     private ResponseEntity<?> getUser(@RequestHeader("Authorization") String jwt){
         return userDetailsServices.getUserByToken(jwt);
 
+    }
+
+    @RequestMapping(value = "/auth/me",method = RequestMethod.PATCH)
+    private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt, @RequestBody UserModel user){
+        return userDetailsServices.updateUser(jwt,user);
     }
 
 }

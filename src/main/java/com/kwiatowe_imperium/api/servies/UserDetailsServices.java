@@ -27,6 +27,23 @@ public class UserDetailsServices implements UserDetailsService {
     @Autowired
     private JwtUtil util;
 
+    public ResponseEntity updateUser(String token,UserModel model){
+        String jwt = token.substring(7);
+        Optional<UserModel> userModel;
+
+        try{
+            repository.findByEmail(util.extractUsername(jwt))
+            .ifPresent(user -> {
+                user.updateForm(model);
+                repository.save(user);
+            });
+
+        }catch (Exception e){
+            return new ResponseEntity("bad token",HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(model,HttpStatus.OK);
+    }
+
     public ResponseEntity getUserByToken(String token){
         Optional<UserModel> userModel;
         String[] p=token.split("\\s");

@@ -31,4 +31,12 @@ public class UserModel {
     @NonNull
     private String password;
 
+
+    public void updateForm(final UserModel source){
+        name = source.name;
+        surname = source.surname;
+        email = source.email;
+        password = source.password;
+    }
+
 }

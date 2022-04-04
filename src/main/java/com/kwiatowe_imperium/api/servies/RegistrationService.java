@@ -33,12 +33,8 @@ public class RegistrationService {
         if(userExist){
             return new ResponseEntity<>("User already exist", HttpStatus.BAD_REQUEST);
         }
-        userExist = userRepository.findByUsername(request.getUsername()).isPresent();
-        if(userExist){
-            return new ResponseEntity<>("User already exist", HttpStatus.BAD_REQUEST);
-        }
         String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
-        UserModel user = new UserModel(request.getName(),request.getSurname(),request.getEmail(),request.getUsername(),encodedPassword);
+        UserModel user = new UserModel(request.getName(),request.getSurname(),request.getEmail(),encodedPassword);
         userRepository.save(user);
         return new ResponseEntity<>("User registered", HttpStatus.OK);
     }

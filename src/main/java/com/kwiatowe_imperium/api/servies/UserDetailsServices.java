@@ -32,7 +32,7 @@ public class UserDetailsServices implements UserDetailsService {
         String[] p=token.split("\\s");
         try {
             String username = util.extractUsername(p[1]);
-            userModel = repository.findByUsername(username);
+            userModel = repository.findByEmail(username);
         }catch (Exception e){
             return new ResponseEntity<>("bad token", HttpStatus.BAD_REQUEST);
         }
@@ -42,13 +42,13 @@ public class UserDetailsServices implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserModel userModel;
-        if(repository.findByUsername(username).isPresent()){
-            userModel = repository.findByUsername(username).get();
+        if(repository.findByEmail(username).isPresent()){
+            userModel = repository.findByEmail(username).get();
         }
         else{
             return null;
         }
 
-        return new User(userModel.getUsername(), userModel.getPassword(), new ArrayList<>());
+        return new User(userModel.getEmail(), userModel.getPassword(), new ArrayList<>());
     }
 }

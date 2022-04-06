@@ -1,18 +1,12 @@
 package com.kwiatowe_imperium.api.controllers;
 
-import com.kwiatowe_imperium.api.models.AuthenticationRequest;
-import com.kwiatowe_imperium.api.models.AuthenticationResponse;
-import com.kwiatowe_imperium.api.models.RegistrationRequest;
-import com.kwiatowe_imperium.api.models.UserModel;
+import com.kwiatowe_imperium.api.models.*;
 import com.kwiatowe_imperium.api.servies.RegistrationService;
 import com.kwiatowe_imperium.api.servies.RoleService;
 import com.kwiatowe_imperium.api.servies.UserDetailsServices;
 import com.kwiatowe_imperium.api.utilis.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -91,12 +85,17 @@ public class SecurityController {
     @RequestMapping(value = "/auth/me",method = RequestMethod.PUT)
     private ResponseEntity<?> setAdmin(@RequestHeader("Authorization") String jwt){
         return roleService.giveRole(jwt);
-
     }
 
     @RequestMapping(value = "/auth/me",method = RequestMethod.PATCH)
     private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt, @RequestBody UserModel user){
         return userDetailsServices.updateUser(jwt,user);
     }
+
+    @RequestMapping(value = "/auth/me/passwordChange",method = RequestMethod.PATCH)
+    private ResponseEntity<?> updatePassword(@RequestHeader("Authorization") String jwt, @RequestBody ChangePasswordRequest request){
+        return registrationService.updatePassword(jwt,request);
+    }
+
 
 }

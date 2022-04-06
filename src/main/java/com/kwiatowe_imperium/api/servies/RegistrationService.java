@@ -26,7 +26,7 @@ public class RegistrationService {
     private final EmailValidation emailValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
-
+    private UserDetailsServices userDetailsServices;
     public ResponseEntity<?> register(RegistrationRequest request) {
         Role role = roleRepository.findByName("USER");
         Set<Role> roleSet = new HashSet<>();
@@ -65,6 +65,23 @@ public class RegistrationService {
         user.setRoles(roleSet);
         userRepository.save(user);
         return new ResponseEntity<>("User registered", HttpStatus.OK);
+    }
+
+    public ResponseEntity updatePassword(String jwt, ChangePasswordRequest request){
+        UserModel userModel;
+        try {
+            userModel = userDetailsServices.getUserFromJwt(jwt);
+        }catch (Exception e){
+            return new ResponseEntity("bad token", HttpStatus.BAD_REQUEST);
+        }
+
+        if(!bCryptPasswordEncoder.matches(request.getOldPassword(),userModel.getPassword())){
+            return new ResponseEntity("Wrong passwrod",HttpStatus.BAD_REQUEST);
+        }
+        String encoded = bCryptPasswordEncoder.encode(request.getNewPassword());
+        userModel.setPassword(encoded);
+        userRepository.save(userModel);
+        return new ResponseEntity("password changed",HttpStatus.OK);
     }
 
 

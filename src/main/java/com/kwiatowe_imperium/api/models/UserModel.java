@@ -1,5 +1,6 @@
 package com.kwiatowe_imperium.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,8 +40,13 @@ public class UserModel {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    public Set<Role> roles = new HashSet<>();
 
+    //orders
+
+    //kaledarz
+
+    //adres zamieszkania
 
     public void updateForm(final UserModel source){
         name = source.name;

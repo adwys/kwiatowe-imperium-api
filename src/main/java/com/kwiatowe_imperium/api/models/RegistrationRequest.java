@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -18,6 +20,5 @@ public class RegistrationRequest implements Serializable {
     private String surname;
     private String email;
     private String password;
-
 
 }

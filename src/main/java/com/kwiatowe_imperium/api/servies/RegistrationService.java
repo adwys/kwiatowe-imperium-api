@@ -1,8 +1,8 @@
 package com.kwiatowe_imperium.api.servies;
 
 
-import com.kwiatowe_imperium.api.models.RegistrationRequest;
-import com.kwiatowe_imperium.api.models.UserModel;
+import com.kwiatowe_imperium.api.models.*;
+import com.kwiatowe_imperium.api.repo.RoleRepository;
 import com.kwiatowe_imperium.api.repo.UserRepository;
 import com.kwiatowe_imperium.api.utilis.EmailValidation;
 import com.kwiatowe_imperium.api.models.RegistrationRequest;
@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @AllArgsConstructor
 public class RegistrationService {
@@ -22,9 +25,12 @@ public class RegistrationService {
     private final UserRepository userRepository;
     private final EmailValidation emailValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    private final RoleRepository roleRepository;
 
     public ResponseEntity<?> register(RegistrationRequest request) {
+        Role role = roleRepository.findByName("USER");
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role);
         boolean isValid = emailValidator.patternMatches(request.getEmail());
         if(!isValid){
             return new ResponseEntity<>("Email is not valid", HttpStatus.BAD_REQUEST);
@@ -34,9 +40,32 @@ public class RegistrationService {
             return new ResponseEntity<>("User already exist", HttpStatus.BAD_REQUEST);
         }
         String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
-        UserModel user = new UserModel(request.getName(),request.getSurname(),request.getEmail(),encodedPassword);
+        UserModel user = new UserModel(request.getName(),request.getSurname(),
+                request.getEmail(),encodedPassword);
+        user.setRoles(roleSet);
         userRepository.save(user);
         return new ResponseEntity<>("User registered", HttpStatus.OK);
     }
+
+    public ResponseEntity<?> createAdmin(RegistrationRequest request) {
+        Role role = roleRepository.findByName("ADMIN");
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role);
+        boolean isValid = emailValidator.patternMatches(request.getEmail());
+        if(!isValid){
+            return new ResponseEntity<>("Email is not valid", HttpStatus.BAD_REQUEST);
+        }
+        boolean userExist = userRepository.findByEmail(request.getEmail()).isPresent();
+        if(userExist){
+            return new ResponseEntity<>("User already exist", HttpStatus.BAD_REQUEST);
+        }
+        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        UserModel user = new UserModel(request.getName(),request.getSurname(),
+                request.getEmail(),encodedPassword);
+        user.setRoles(roleSet);
+        userRepository.save(user);
+        return new ResponseEntity<>("User registered", HttpStatus.OK);
+    }
+
 
 }

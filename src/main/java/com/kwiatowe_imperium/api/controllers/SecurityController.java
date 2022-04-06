@@ -5,6 +5,7 @@ import com.kwiatowe_imperium.api.models.AuthenticationResponse;
 import com.kwiatowe_imperium.api.models.RegistrationRequest;
 import com.kwiatowe_imperium.api.models.UserModel;
 import com.kwiatowe_imperium.api.servies.RegistrationService;
+import com.kwiatowe_imperium.api.servies.RoleService;
 import com.kwiatowe_imperium.api.servies.UserDetailsServices;
 import com.kwiatowe_imperium.api.utilis.JwtUtil;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +37,9 @@ public class SecurityController {
     @Autowired
     private final RegistrationService registrationService;
 
+    @Autowired
+    private final RoleService roleService;
+
 
     @RequestMapping(value = "/auth/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
@@ -55,15 +60,37 @@ public class SecurityController {
 
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping(value="/userping", method = RequestMethod.GET)
+    public String userPing(){
+        return "only User Can Read This";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/Adminping", method = RequestMethod.GET)
+    public String AdminPing(){
+        return "only ADMIN Can Read This";
+    }
 
     @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
     public ResponseEntity<?> registerNewUser(@RequestBody RegistrationRequest request){
         return registrationService.register(request);
     }
 
+    @RequestMapping(value = "/auth/registerAdmin", method = RequestMethod.POST)
+    public ResponseEntity<?> registerAdmin(@RequestBody RegistrationRequest request){
+        return registrationService.createAdmin(request);
+    }
+
+
     @RequestMapping(value = "/auth/me",method = RequestMethod.GET)
     private ResponseEntity<?> getUser(@RequestHeader("Authorization") String jwt){
         return userDetailsServices.getUserByToken(jwt);
+
+    }
+    @RequestMapping(value = "/auth/me",method = RequestMethod.PUT)
+    private ResponseEntity<?> setAdmin(@RequestHeader("Authorization") String jwt){
+        return roleService.giveRole(jwt);
 
     }
 

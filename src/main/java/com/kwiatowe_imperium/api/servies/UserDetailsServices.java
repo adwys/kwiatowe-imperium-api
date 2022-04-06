@@ -1,11 +1,14 @@
 package com.kwiatowe_imperium.api.servies;
 
+import com.kwiatowe_imperium.api.models.Role;
 import com.kwiatowe_imperium.api.models.UserModel;
 import com.kwiatowe_imperium.api.repo.UserRepository;
 import com.kwiatowe_imperium.api.utilis.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserDetailsServices implements UserDetailsService {
@@ -66,6 +68,14 @@ public class UserDetailsServices implements UserDetailsService {
             return null;
         }
 
-        return new User(userModel.getEmail(), userModel.getPassword(), new ArrayList<>());
+        return new User(userModel.getEmail(), userModel.getPassword(), getAuthority(userModel));
+    }
+
+    private Set<SimpleGrantedAuthority> getAuthority(UserModel user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        });
+        return authorities;
     }
 }

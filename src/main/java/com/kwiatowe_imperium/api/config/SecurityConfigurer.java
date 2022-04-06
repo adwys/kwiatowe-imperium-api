@@ -38,12 +38,14 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.cors();
-        http.csrf().disable();
-//                .authorizeRequests().antMatchers("/authenticate","/register","/api/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and().sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable()
+                .authorizeRequests().antMatchers("/auth/authenticate","/auth/register").permitAll()
+                .antMatchers("/userping").hasRole("USER")
+                .antMatchers("/api/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 

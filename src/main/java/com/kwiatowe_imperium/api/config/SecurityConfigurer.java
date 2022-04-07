@@ -4,6 +4,7 @@ import com.kwiatowe_imperium.api.filters.JwtRequestFilter;
 import com.kwiatowe_imperium.api.servies.UserDetailsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,7 +40,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         http.cors();
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/auth/authenticate","/auth/register").permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/auth/register","/auth/authenticate").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/**").permitAll()
                 .antMatchers("/userping").hasRole("USER")
                 .antMatchers("/api/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

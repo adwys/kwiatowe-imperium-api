@@ -18,9 +18,10 @@ public class Hero implements Serializable {
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
+            strategy = GenerationType.AUTO
     )
     private Long id;
+    private boolean main;
 
     private String titlePl;
     private String subtitlePl;

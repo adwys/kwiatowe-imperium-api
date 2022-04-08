@@ -23,10 +23,31 @@ public class HeroController {
         return new ResponseEntity<>(service.addTo(hero_id,image_id), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/hero", method = RequestMethod.GET)
+    public ResponseEntity<?> getHero(@RequestHeader("accept-language") String lang){
+        return service.getHero(lang);
+    }
+
     @RequestMapping(value = "/api/hero", method = RequestMethod.POST)
+    public ResponseEntity<?> createMain(@RequestBody Hero request){
+        return service.createMain(request);
+    }
+
+    @RequestMapping(value = "/api/hero", method = RequestMethod.DELETE)
+    ResponseEntity<?> delete(){
+        return service.deleteMain();
+    }
+
+    @RequestMapping(value = "/api/hero", method = RequestMethod.PATCH)
+    ResponseEntity<?> update(@RequestBody Hero hero){
+        return service.updateMain(hero);
+    }
+
+    @RequestMapping(value = "/api/hero/add", method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody Hero request){
         return service.create(request);
     }
+
     @RequestMapping(value = "/api/hero/all", method = RequestMethod.GET,params = {"!sort", "!page", "!size"})
     ResponseEntity<?> findAll(@RequestHeader("accept-language") String lang){
         return service.readAll(lang);

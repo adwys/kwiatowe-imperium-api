@@ -46,6 +46,19 @@ public class HeroService {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    public ResponseEntity<?> createMain(Hero item) {
+        if(repository.findByMain()==null){
+            item.setMain(true);
+            repository.save(item);
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        }
+        Hero previous = repository.findByMain();
+        previous.setMain(false);
+        item.setMain(true);
+        repository.save(item);
+        return new ResponseEntity<>(item, HttpStatus.OK);
+    }
+
     public ResponseEntity<?> read(Long id,String lang) {
         if(lang.equals("en")){
             return new ResponseEntity<>(
@@ -58,6 +71,40 @@ public class HeroService {
                         .map(HeroService::MapToPl)
                 ,HttpStatus.OK);
     }
+
+    public ResponseEntity<?> getHero(String lang) {
+        Hero hero = repository.findByMain();
+
+        try{
+            if(lang.equals("en")){
+                return new ResponseEntity<>(MapToEng(hero),HttpStatus.OK);
+            }
+            return new ResponseEntity<>(MapToPl(hero),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Hero not set yet",HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    public ResponseEntity<?> updateMain(Hero toUpdate) {
+        if (repository.findByMain() == null) {
+
+            return createMain(toUpdate);
+        }
+        Hero model;
+        try {
+            model = toUpdate;
+        } catch (Exception e) {
+            return new ResponseEntity<>("bad body", HttpStatus.BAD_REQUEST);
+        }
+
+        Hero main = repository.findByMain();
+        main.updateFrom(model);
+        repository.save(main);
+        return new ResponseEntity<>(main, HttpStatus.OK);
+
+    }
+
 
     public ResponseEntity<?> update(Long id, Hero toUpdate) {
         if (!repository.existsById(id)) {
@@ -85,6 +132,16 @@ public class HeroService {
         }
         Hero toReturn = repository.getById(id);
         repository.deleteById(id);
+        return new ResponseEntity<>(toReturn, HttpStatus.OK);
+
+    }
+
+    public ResponseEntity<?> deleteMain() {
+        if (repository.findByMain() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        Hero toReturn = repository.findByMain();
+        repository.deleteById(toReturn.getId());
         return new ResponseEntity<>(toReturn, HttpStatus.OK);
 
     }

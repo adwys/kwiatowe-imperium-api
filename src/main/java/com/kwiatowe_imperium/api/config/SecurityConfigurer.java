@@ -39,16 +39,16 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.cors();
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/auth/register","/auth/authenticate").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/**").permitAll()
-                .antMatchers("/userping").hasRole("USER")
-                .antMatchers("/api/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable();
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.POST,"/auth/register","/auth/authenticate").permitAll()
+//                .antMatchers(HttpMethod.GET,"/api/**").permitAll()
+//                .antMatchers("/userping").hasRole("USER")
+//                .antMatchers("/api/**").hasRole("ADMIN")
+//                .anyRequest().authenticated()
+//                .and().sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 

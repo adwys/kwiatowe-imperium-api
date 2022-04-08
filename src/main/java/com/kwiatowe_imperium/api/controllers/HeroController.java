@@ -39,8 +39,8 @@ public class HeroController {
     }
 
     @RequestMapping(value = "/api/hero", method = RequestMethod.PATCH)
-    ResponseEntity<?> update(@RequestBody Hero hero){
-        return service.updateMain(hero);
+    ResponseEntity<?> updateMain(@RequestHeader(value = "image", required = false) Long id,@RequestBody Hero hero){
+        return service.updateMain(id,hero);
     }
 
     @RequestMapping(value = "/api/hero/add", method = RequestMethod.POST)

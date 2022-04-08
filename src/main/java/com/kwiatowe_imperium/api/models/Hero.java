@@ -36,14 +36,12 @@ public class Hero implements Serializable {
     private Image image;
 
     public void updateFrom(final Hero source) {
-        id = source.id;
         titlePl = source.titlePl;
         titleEn = source.titleEn;
         subtitleEn = source.subtitleEn;
         subtitlePl = source.subtitlePl;
         buttonTextEn = source.buttonTextEn;
         buttonTextPl = source.buttonTextPl;
-        image = source.image;
     }
 
 }

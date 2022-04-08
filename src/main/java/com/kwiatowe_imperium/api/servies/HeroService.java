@@ -86,9 +86,9 @@ public class HeroService {
 
     }
 
-    public ResponseEntity<?> updateMain(Hero toUpdate) {
-        if (repository.findByMain() == null) {
+    public ResponseEntity<?> updateMain(Long image_id,Hero toUpdate) {
 
+        if (repository.findByMain() == null) {
             return createMain(toUpdate);
         }
         Hero model;
@@ -100,6 +100,11 @@ public class HeroService {
 
         Hero main = repository.findByMain();
         main.updateFrom(model);
+        if(image_id != null){
+            if(imageRepository.findById(image_id).isPresent()){
+                addTo(main.getId(),image_id);
+            }
+        }
         repository.save(main);
         return new ResponseEntity<>(main, HttpStatus.OK);
 
@@ -158,9 +163,9 @@ public class HeroService {
     public static HeroDTO MapToEng(Hero h){
         return new HeroDTO(
                 h.getId(),
-                h.getTitlePl(),
-                h.getSubtitlePl(),
-                h.getButtonTextPl(),
+                h.getTitleEn(),
+                h.getSubtitleEn(),
+                h.getButtonTextEn(),
                 h.getImage());
     }
 

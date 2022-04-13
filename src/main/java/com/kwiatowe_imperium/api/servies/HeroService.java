@@ -72,6 +72,11 @@ public class HeroService {
                 ,HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getFullHero(){
+        Hero hero = repository.findByMain();
+        return new ResponseEntity<>(hero,HttpStatus.OK);
+    }
+
     public ResponseEntity<?> getHero(String lang) {
         Hero hero = repository.findByMain();
 

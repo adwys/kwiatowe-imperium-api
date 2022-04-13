@@ -23,6 +23,12 @@ public class HeroController {
         return new ResponseEntity<>(service.addTo(hero_id,image_id), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/hero/full", method = RequestMethod.GET)
+    public ResponseEntity<?> getHero(){
+        return service.getFullHero();
+    }
+
+
     @RequestMapping(value = "/api/hero", method = RequestMethod.GET)
     public ResponseEntity<?> getHero(@RequestHeader("accept-language") String lang){
         return service.getHero(lang);

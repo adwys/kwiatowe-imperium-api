@@ -13,5 +13,5 @@ public class HeroDTO {
     private String subtitle;
     private String buttonText;
     private Image image;
-
+    private Category category;
 }

@@ -1,5 +1,6 @@
 package com.kwiatowe_imperium.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ public class Hero implements Serializable {
     private String subtitleEn;
     private String buttonTextEn;
 
+    @OneToOne
+    @JsonIgnore
+    private Category category;
 
     @OneToOne
     private Image image;

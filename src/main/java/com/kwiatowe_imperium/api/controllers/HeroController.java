@@ -2,6 +2,7 @@ package com.kwiatowe_imperium.api.controllers;
 
 import com.kwiatowe_imperium.api.models.Category;
 import com.kwiatowe_imperium.api.models.Hero;
+import com.kwiatowe_imperium.api.models.HeroRequest;
 import com.kwiatowe_imperium.api.servies.CategoryService;
 import com.kwiatowe_imperium.api.servies.HeroService;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class HeroController {
     }
 
     @RequestMapping(value = "/api/hero", method = RequestMethod.POST)
-    public ResponseEntity<?> createMain(@RequestBody Hero request){
+    public ResponseEntity<?> createMain(@RequestBody HeroRequest request){
         return service.createMain(request);
     }
 
@@ -45,8 +46,8 @@ public class HeroController {
     }
 
     @RequestMapping(value = "/api/hero", method = RequestMethod.PATCH)
-    ResponseEntity<?> updateMain(@RequestHeader(value = "image", required = false) Long id,@RequestBody Hero hero){
-        return service.updateMain(id,hero);
+    ResponseEntity<?> updateMain(@RequestBody HeroRequest hero){
+        return service.updateMain(hero);
     }
 
     @RequestMapping(value = "/api/hero/add", method = RequestMethod.POST)

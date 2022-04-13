@@ -6,6 +6,7 @@ import com.kwiatowe_imperium.api.repo.HeroRepository;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class HeroService {
     private HeroRepository repository;
 
     private ImageRepository imageRepository;
+    private CategoryRepository categoryRepository;
 
     public ResponseEntity<?> readAll(String lang) {
         if(lang.equals("en")){
@@ -46,16 +48,48 @@ public class HeroService {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> createMain(Hero item) {
+    private Hero mapToHero(HeroRequest item){
+        Hero hero = null;
+        try {
+            hero = new Hero(
+                    item.getId(),
+                    true,
+                    item.getTitlePl(),
+                    item.getSubtitlePl(),
+                    item.getButtonTextPl(),
+                    item.getTitleEn(),
+                    item.getSubtitleEn(),
+                    item.getButtonTextEn(),
+                    null,
+                    null
+            );
+            if(categoryRepository.existsById(item.getCategoryId())){
+                hero.setCategory(categoryRepository.getById(item.getCategoryId()));
+            }
+            if(imageRepository.existsById(item.getImageId())){
+                hero.setImage(imageRepository.getById(item.getImageId()));
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return hero;
+    }
+
+    public ResponseEntity<?> createMain(HeroRequest item) {
+
+        Hero hero = mapToHero(item);
+        if(hero == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         if(repository.findByMain()==null){
-            item.setMain(true);
-            repository.save(item);
+            repository.save(hero);
             return new ResponseEntity<>(item, HttpStatus.OK);
         }
         Hero previous = repository.findByMain();
         previous.setMain(false);
-        item.setMain(true);
-        repository.save(item);
+
+        repository.save(hero);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
@@ -91,10 +125,15 @@ public class HeroService {
 
     }
 
-    public ResponseEntity<?> updateMain(Long image_id,Hero toUpdate) {
+    public ResponseEntity<?> updateMain(HeroRequest request) {
+
+        Hero toUpdate = mapToHero(request);
+        if(toUpdate == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         if (repository.findByMain() == null) {
-            return createMain(toUpdate);
+            return createMain(request);
         }
         Hero model;
         try {
@@ -105,13 +144,14 @@ public class HeroService {
 
         Hero main = repository.findByMain();
         main.updateFrom(model);
-        if(image_id != null){
-            if(imageRepository.findById(image_id).isPresent()){
-                addTo(main.getId(),image_id);
-            }
+        if(categoryRepository.existsById(request.getCategoryId())){
+            main.setCategory(categoryRepository.getById(request.getCategoryId()));
+        }
+        if(imageRepository.existsById(request.getImageId())){
+            main.setImage(imageRepository.getById(request.getImageId()));
         }
         repository.save(main);
-        return new ResponseEntity<>(main, HttpStatus.OK);
+        return new ResponseEntity<>(request, HttpStatus.OK);
 
     }
 
@@ -162,7 +202,8 @@ public class HeroService {
                 h.getTitlePl(),
                 h.getSubtitlePl(),
                 h.getButtonTextPl(),
-                h.getImage());
+                h.getImage(),
+                h.getCategory());
     }
 
     public static HeroDTO MapToEng(Hero h){
@@ -171,7 +212,8 @@ public class HeroService {
                 h.getTitleEn(),
                 h.getSubtitleEn(),
                 h.getButtonTextEn(),
-                h.getImage());
+                h.getImage(),
+                h.getCategory());
     }
 
 }

@@ -4,9 +4,7 @@ import com.kwiatowe_imperium.api.models.*;
 import com.kwiatowe_imperium.api.repo.CategoryRepository;
 import com.kwiatowe_imperium.api.repo.HeroRepository;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
-import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -63,11 +61,11 @@ public class HeroService {
                     null,
                     null
             );
-            if(categoryRepository.existsById(item.getCategoryId())){
-                hero.setCategory(categoryRepository.getById(item.getCategoryId()));
+            if(categoryRepository.existsById(item.getCategory())){
+                hero.setCategory(categoryRepository.getById(item.getCategory()));
             }
-            if(imageRepository.existsById(item.getImageId())){
-                hero.setImage(imageRepository.getById(item.getImageId()));
+            if(imageRepository.existsById(item.getImage())){
+                hero.setImage(imageRepository.getById(item.getImage()));
             }
         }catch (Exception e){
             return null;
@@ -144,11 +142,11 @@ public class HeroService {
 
         Hero main = repository.findByMain();
         main.updateFrom(model);
-        if(categoryRepository.existsById(request.getCategoryId())){
-            main.setCategory(categoryRepository.getById(request.getCategoryId()));
+        if(categoryRepository.existsById(request.getCategory())){
+            main.setCategory(categoryRepository.getById(request.getCategory()));
         }
-        if(imageRepository.existsById(request.getImageId())){
-            main.setImage(imageRepository.getById(request.getImageId()));
+        if(imageRepository.existsById(request.getImage())){
+            main.setImage(imageRepository.getById(request.getImage()));
         }
         repository.save(main);
         return new ResponseEntity<>(request, HttpStatus.OK);

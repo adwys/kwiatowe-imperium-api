@@ -15,6 +15,6 @@ public class HeroRequest {
     private String titleEn;
     private String subtitleEn;
     private String buttonTextEn;
-    private Long imageId;
-    private Long categoryId;
+    private Long image;
+    private Long category;
 }

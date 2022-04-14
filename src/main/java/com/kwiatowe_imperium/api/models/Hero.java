@@ -33,7 +33,6 @@ public class Hero implements Serializable {
     private String buttonTextEn;
 
     @OneToOne
-    @JsonIgnore
     private Category category;
 
     @OneToOne

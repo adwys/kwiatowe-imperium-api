@@ -42,7 +42,8 @@ public class UserModel {
     )
     public Set<Role> roles = new HashSet<>();
 
-    //orders
+    @OneToOne(cascade=CascadeType.ALL)
+    private Cart cart;
 
     //kaledarz
 

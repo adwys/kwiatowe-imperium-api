@@ -26,11 +26,27 @@ import java.util.*;
 @AllArgsConstructor
 public class UserDetailsServices implements UserDetailsService {
 
+
     @Autowired
     private UserRepository repository;
 
     @Autowired
     private JwtUtil util;
+
+
+    public UserModel jwtUser(String token){
+        String jwt = token.substring(7);
+        Optional<UserModel> userModel;
+
+        try{
+            userModel = repository.findByEmail(util.extractUsername(jwt));
+
+        }catch (Exception e){
+            return null;
+        }
+
+        return userModel.get();
+    }
 
 
     public UserModel getUserFromJwt(String token){

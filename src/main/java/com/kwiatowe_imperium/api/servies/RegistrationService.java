@@ -43,6 +43,9 @@ public class RegistrationService {
         UserModel user = new UserModel(request.getName(),request.getSurname(),
                 request.getEmail(),encodedPassword);
         user.setRoles(roleSet);
+
+        user.setCart(new Cart());
+
         userRepository.save(user);
         return new ResponseEntity<>("User registered", HttpStatus.OK);
     }

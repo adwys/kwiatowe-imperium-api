@@ -7,6 +7,7 @@ import com.kwiatowe_imperium.api.models.Product;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.data.domain.Page;
@@ -27,12 +28,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ImageService {
 
     private final ImageRepository repository;
 
-    @Value("${api.url}")
+    @Value("${app.url}")
     private String url;
 
 

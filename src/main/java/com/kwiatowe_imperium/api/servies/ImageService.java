@@ -38,12 +38,12 @@ public class ImageService {
 
     public ResponseEntity<?> saveToDB(MultipartFile file,String name){
 
-        File f = new File("target/classes/static/"+name);
-        try (OutputStream o = new FileOutputStream(f)){
-            o.write(file.getBytes());
-        }catch (Exception e){
-            return new ResponseEntity("temporary file errro",HttpStatus.EXPECTATION_FAILED);
-        }
+//        File f = new File("target/classes/static/"+name);
+//        try (OutputStream o = new FileOutputStream(f)){
+//            o.write(file.getBytes());
+//        }catch (Exception e){
+//            return new ResponseEntity("temporary file errro",HttpStatus.EXPECTATION_FAILED);
+//        }
 
         File newfile = new File("src/main/resources/static/"+name);
         try (OutputStream os = new FileOutputStream(newfile)) {

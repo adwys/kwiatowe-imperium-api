@@ -7,6 +7,7 @@ import com.kwiatowe_imperium.api.models.Product;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,8 @@ public class ImageService {
 
     private final ImageRepository repository;
 
+    @Value("${api.url}")
+    private String url;
 
 
     public ResponseEntity<?> saveToDB(MultipartFile file,String name){

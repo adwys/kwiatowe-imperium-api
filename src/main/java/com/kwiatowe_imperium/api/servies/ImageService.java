@@ -50,7 +50,7 @@ public class ImageService {
 
             os.write(file.getBytes());
             Image image = new Image();
-            image.setURL("http://localhost:8080/"+name);
+            image.setURL(url+name);
             create(image);
 
         }catch (Exception e){

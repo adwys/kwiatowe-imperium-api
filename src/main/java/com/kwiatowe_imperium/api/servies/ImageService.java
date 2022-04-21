@@ -55,7 +55,7 @@ public class ImageService {
             create(image);
 
         }catch (Exception e){
-            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>( System.getProperty("user.dir"),HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>("saved", HttpStatus.OK);

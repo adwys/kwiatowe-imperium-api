@@ -1,5 +1,6 @@
 package com.kwiatowe_imperium.api.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.resource.PathResourceResolver;
@@ -7,6 +8,9 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 @Configuration
 @EnableWebMvc
 public class CorsConfigurer implements WebMvcConfigurer {
+
+    @Value("${app.resFolder}")
+    private String baseFolder;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -17,8 +21,9 @@ public class CorsConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
+        System.out.println(baseFolder);
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/")
+                .addResourceLocations("file://" + baseFolder)
                 .setCachePeriod(0)
                 .resourceChain(true)
                 .addResolver(new PathResourceResolver());

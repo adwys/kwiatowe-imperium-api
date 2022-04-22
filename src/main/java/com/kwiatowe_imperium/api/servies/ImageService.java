@@ -36,17 +36,12 @@ public class ImageService {
     @Value("${app.url}")
     private String url;
 
+    @Value("${app.resFolder}")
+    private String baseFolder;
+
 
     public ResponseEntity<?> saveToDB(MultipartFile file,String name){
-
-//        File f = new File("target/classes/static/"+name);
-//        try (OutputStream o = new FileOutputStream(f)){
-//            o.write(file.getBytes());
-//        }catch (Exception e){
-//            return new ResponseEntity("temporary file errro",HttpStatus.EXPECTATION_FAILED);
-//        }
-
-        File newfile = new File("src/main/resources/static/"+name);
+        File newfile = new File(baseFolder+name);
         try (OutputStream os = new FileOutputStream(newfile)) {
 
             os.write(file.getBytes());

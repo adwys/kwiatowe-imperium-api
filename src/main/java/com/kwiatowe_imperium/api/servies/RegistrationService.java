@@ -27,6 +27,7 @@ public class RegistrationService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
     private UserDetailsServices userDetailsServices;
+
     public ResponseEntity<?> register(RegistrationRequest request) {
         Role role = roleRepository.findByName("USER");
         Set<Role> roleSet = new HashSet<>();
@@ -44,6 +45,8 @@ public class RegistrationService {
                 request.getEmail(),encodedPassword);
 
         user.setAddress(request.getAddress());
+        user.setPostalCode(request.getPostalCode());
+        user.setCity(request.getCity());
         user.setRoles(roleSet);
         user.setCart(new Cart());
 

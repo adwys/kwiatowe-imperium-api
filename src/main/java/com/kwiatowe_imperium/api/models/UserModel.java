@@ -31,6 +31,9 @@ public class UserModel {
     private String surname;
 
     private String address;
+    private String postalCode;
+    private String City;
+
     @NonNull
     private String email;
     @NonNull

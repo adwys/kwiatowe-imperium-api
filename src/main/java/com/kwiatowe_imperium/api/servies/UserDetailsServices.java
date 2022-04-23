@@ -2,6 +2,7 @@ package com.kwiatowe_imperium.api.servies;
 
 import com.kwiatowe_imperium.api.models.Role;
 import com.kwiatowe_imperium.api.models.UserModel;
+import com.kwiatowe_imperium.api.models.UserResponse;
 import com.kwiatowe_imperium.api.repo.UserRepository;
 import com.kwiatowe_imperium.api.utilis.JwtUtil;
 import lombok.AllArgsConstructor;
@@ -81,15 +82,27 @@ public class UserDetailsServices implements UserDetailsService {
     }
 
     public ResponseEntity getUserByToken(String token){
-        Optional<UserModel> userModel;
+        UserModel userModel;
         String[] p=token.split("\\s");
         try {
             String username = util.extractUsername(p[1]);
-            userModel = repository.findByEmail(username);
+            userModel = repository.findByEmail(username).get();
         }catch (Exception e){
             return new ResponseEntity<>("bad token", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(userModel,HttpStatus.OK);
+
+        UserResponse user = new UserResponse(
+                userModel.getId(),
+                userModel.getName(),
+                userModel.getSurname(),
+                userModel.getAddress(),
+                userModel.getPostalCode(),
+                userModel.getCity(),
+                userModel.getEmail(),
+                userModel.getRoles(),
+                userModel.getCart());
+
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
 

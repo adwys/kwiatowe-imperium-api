@@ -21,4 +21,6 @@ public class RegistrationRequest implements Serializable {
     private String email;
     private String password;
     private String address;
+    private String postalCode;
+    private String City;
 }

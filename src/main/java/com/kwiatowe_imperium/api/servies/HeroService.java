@@ -104,9 +104,39 @@ public class HeroService {
                 ,HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getFullHero(){
+    public ResponseEntity<?> getFullHero(String lang){
         Hero hero = repository.findByMain();
-        return new ResponseEntity<>(hero,HttpStatus.OK);
+        HeroReturn heroReturn;
+        if(lang.equals("pl")){
+            CategoryHero h = new CategoryHero(hero.getCategory().getId(),hero.getCategory().getNamePl(),hero.getCategory().isVisible());
+            heroReturn = new HeroReturn(
+                    hero.getId(),
+                    hero.isMain(),
+                    hero.getTitlePl(),
+                    hero.getSubtitlePl(),
+                    hero.getButtonTextPl(),
+                    hero.getTitleEn(),
+                    hero.getSubtitleEn(),
+                    hero.getButtonTextEn(),
+                    hero.getImage(),
+                    h
+                    );
+        }else{
+            CategoryHero h = new CategoryHero(hero.getCategory().getId(),hero.getCategory().getNameEn(),hero.getCategory().isVisible());
+            heroReturn = new HeroReturn(
+                    hero.getId(),
+                    hero.isMain(),
+                    hero.getTitlePl(),
+                    hero.getSubtitlePl(),
+                    hero.getButtonTextPl(),
+                    hero.getTitleEn(),
+                    hero.getSubtitleEn(),
+                    hero.getButtonTextEn(),
+                    hero.getImage(),
+                    h);
+        }
+
+        return new ResponseEntity<>(heroReturn,HttpStatus.OK);
     }
 
     public ResponseEntity<?> getHero(String lang) {

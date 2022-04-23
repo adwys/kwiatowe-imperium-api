@@ -25,8 +25,8 @@ public class HeroController {
     }
 
     @RequestMapping(value = "/api/hero/full", method = RequestMethod.GET)
-    public ResponseEntity<?> getHero(){
-        return service.getFullHero();
+    public ResponseEntity<?> getHeroFull(@RequestHeader("accept-language") String lang){
+        return service.getFullHero(lang);
     }
 
 

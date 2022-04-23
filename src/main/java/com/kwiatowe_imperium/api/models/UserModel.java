@@ -32,7 +32,7 @@ public class UserModel {
 
     private String address;
     private String postalCode;
-    private String City;
+    private String city;
 
     @NonNull
     private String email;
@@ -56,9 +56,9 @@ public class UserModel {
     public void updateForm(final UserModel source){
         name = source.name;
         address = source.address;
+        postalCode = source.postalCode;
+        city = source.city;
         surname = source.surname;
-        email = source.email;
-        password = source.password;
     }
 
 }

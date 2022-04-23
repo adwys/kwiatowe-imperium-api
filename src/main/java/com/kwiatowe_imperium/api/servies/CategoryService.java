@@ -3,6 +3,7 @@ package com.kwiatowe_imperium.api.servies;
 
 import com.kwiatowe_imperium.api.models.*;
 import com.kwiatowe_imperium.api.repo.CategoryRepository;
+import com.kwiatowe_imperium.api.repo.HeroRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ public class CategoryService {
     private CategoryRepository repository;
 
     private ProductRepository productRepository;
+
+    private HeroRepository heroRepository;
 
     public ResponseEntity<?> readByName(String lang,String name){
 
@@ -121,9 +124,12 @@ public class CategoryService {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        Category toReturn = repository.getById(id);
+        if(heroRepository.findByCategoryId(id) != null){
+            heroRepository.findByCategoryId(id).setCategory(null);
+        }
+//        Category toReturn = repository.getById(id);
         repository.deleteById(id);
-        return new ResponseEntity<>(toReturn, HttpStatus.OK);
+        return new ResponseEntity<>("deleted", HttpStatus.OK);
 
     }
 

@@ -7,6 +7,8 @@ import com.kwiatowe_imperium.api.models.ProductDTO;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,14 +42,15 @@ public class ProductService {
 
     }
 
-    public  ResponseEntity<?> readAllProduct(String lang){
+    public  ResponseEntity<?> readAllProduct(int page,int size,String lang){
+        Pageable pageable = PageRequest.of(page, size);
         if(lang.equals("en")){
-            return new ResponseEntity<>(repository.findAll()
+            return new ResponseEntity<>(repository.findAll(pageable)
                     .stream()
                     .map(ProductService::MapToEng)
                     .collect(Collectors.toList()),HttpStatus.OK);
         }
-        return new ResponseEntity<>(repository.findAll()
+        return new ResponseEntity<>(repository.findAll(pageable)
                 .stream()
                 .map(ProductService::MapToPl)
                 .collect(Collectors.toList()),HttpStatus.OK);

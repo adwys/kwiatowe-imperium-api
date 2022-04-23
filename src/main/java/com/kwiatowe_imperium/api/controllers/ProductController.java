@@ -31,9 +31,12 @@ public class ProductController {
     public ResponseEntity<?> createProduct( @RequestBody Product request){
         return service.create(request);
     }
+
     @RequestMapping(value = "/api/product/all", method = RequestMethod.GET)
-    ResponseEntity<?> findAllProduct(@RequestHeader("accept-language") String lang){
-        return service.readAllProduct(lang);
+    ResponseEntity<?> findAllProduct(@RequestParam(value = "page",required = false,defaultValue = "0") Integer page,
+                                     @RequestParam(value = "size",required = false,defaultValue = "10") Integer size,
+                                     @RequestHeader("accept-language") String lang){
+        return service.readAllProduct(page,size,lang);
     }
 
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)

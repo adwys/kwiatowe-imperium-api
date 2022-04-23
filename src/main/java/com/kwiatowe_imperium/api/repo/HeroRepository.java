@@ -11,4 +11,6 @@ public interface HeroRepository extends JpaRepository<Hero, Long> {
 
     @Query("SELECT h FROM Hero h WHERE h.main = true")
     Hero findByMain();
+
+    Hero findByCategoryId(Long id);
 }

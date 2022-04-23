@@ -29,10 +29,14 @@ public class UserModel {
     private String name;
     @NonNull
     private String surname;
+
+    private String address;
     @NonNull
     private String email;
     @NonNull
     private String password;
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -45,12 +49,10 @@ public class UserModel {
     @OneToOne(cascade=CascadeType.ALL)
     private Cart cart;
 
-    //kaledarz
-
-    //adres zamieszkania
 
     public void updateForm(final UserModel source){
         name = source.name;
+        address = source.address;
         surname = source.surname;
         email = source.email;
         password = source.password;

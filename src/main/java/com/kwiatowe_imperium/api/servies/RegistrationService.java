@@ -42,8 +42,9 @@ public class RegistrationService {
         String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
         UserModel user = new UserModel(request.getName(),request.getSurname(),
                 request.getEmail(),encodedPassword);
-        user.setRoles(roleSet);
 
+        user.setAddress(request.getAddress());
+        user.setRoles(roleSet);
         user.setCart(new Cart());
 
         userRepository.save(user);
@@ -66,6 +67,7 @@ public class RegistrationService {
         UserModel user = new UserModel(request.getName(),request.getSurname(),
                 request.getEmail(),encodedPassword);
         user.setRoles(roleSet);
+        user.setAddress(request.getAddress());
         userRepository.save(user);
         return new ResponseEntity<>("User registered", HttpStatus.OK);
     }
@@ -82,6 +84,7 @@ public class RegistrationService {
             return new ResponseEntity("Wrong passwrod",HttpStatus.BAD_REQUEST);
         }
         String encoded = bCryptPasswordEncoder.encode(request.getNewPassword());
+
         userModel.setPassword(encoded);
         userRepository.save(userModel);
         return new ResponseEntity("password changed",HttpStatus.OK);

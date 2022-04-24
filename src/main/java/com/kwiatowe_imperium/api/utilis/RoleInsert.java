@@ -16,8 +16,10 @@ public class RoleInsert implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        if(repository.findByName("ADMIN") == null || repository.findByName("USER") == null){
+        if(repository.findByName("ADMIN") == null){
             repository.save(new Role("ADMIN"));
+        }
+        if(repository.findByName("USER") == null){
             repository.save(new Role("USER"));
         }
     }

@@ -7,6 +7,7 @@ import com.kwiatowe_imperium.api.models.ProductDTO;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import netscape.javascript.JSObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
@@ -14,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,16 +47,22 @@ public class ProductService {
 
     public  ResponseEntity<?> readAllProduct(int page,int size,String lang){
         Pageable pageable = PageRequest.of(page, size);
+        Map<String, Object> map = new HashMap<String, Object>();
         if(lang.equals("en")){
-            return new ResponseEntity<>(repository.findAll(pageable)
-                    .stream()
+            map.put("count",repository.count());
+            map.put("data",repository.findAll(pageable).stream()
                     .map(ProductService::MapToEng)
-                    .collect(Collectors.toList()),HttpStatus.OK);
+                    .collect(Collectors.toList()));
+            return new ResponseEntity<>(map,HttpStatus.OK);
         }
-        return new ResponseEntity<>(repository.findAll(pageable)
-                .stream()
-                .map(ProductService::MapToPl)
-                .collect(Collectors.toList()),HttpStatus.OK);
+        else {
+            map.put("count",repository.count());
+            map.put("data",repository.findAll(pageable).stream()
+                    .map(ProductService::MapToPl)
+                    .collect(Collectors.toList()));
+            return new ResponseEntity<>(map,HttpStatus.OK);
+        }
+
     }
 
     public static ProductDTO MapToPl(Product p){

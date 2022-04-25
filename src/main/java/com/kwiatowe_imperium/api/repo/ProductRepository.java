@@ -20,6 +20,8 @@ public interface ProductRepository extends JpaRepository<Product,Long>, PagingAn
     List<Product> findAll();
     Product findByNameEnIgnoreCase(String nameEn);
     Product findByNamePlIgnoreCase(String namePl);
+    @Query("SELECT COUNT(p) FROM Product p")
+    long count();
 
     @Override
     Page<Product> findAll(Pageable pageable);

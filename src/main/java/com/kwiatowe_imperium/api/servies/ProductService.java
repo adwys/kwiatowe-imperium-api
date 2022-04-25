@@ -1,13 +1,17 @@
 package com.kwiatowe_imperium.api.servies;
 
 
+import com.kwiatowe_imperium.api.models.Category;
 import com.kwiatowe_imperium.api.models.Image;
 import com.kwiatowe_imperium.api.models.Product;
 import com.kwiatowe_imperium.api.models.ProductDTO;
+import com.kwiatowe_imperium.api.repo.CategoryRepository;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
 import netscape.javascript.JSObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
@@ -15,10 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +29,8 @@ public class ProductService {
     private final ProductRepository repository;
 
     private final ImageRepository imageRepository;
+
+    private final CategoryRepository categoryRepository;
 
     public ResponseEntity<?> readByName(String name){
         try {
@@ -45,19 +48,25 @@ public class ProductService {
 
     }
 
-    public  ResponseEntity<?> readAllProduct(int page,int size,String lang){
+    public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String lang){
         Pageable pageable = PageRequest.of(page, size);
+        Page<Product> products;
+        products = repository.findAll(pageable);
+        if(categoryRepository.existsById(cat)){
+            products = new PageImpl<>(categoryRepository.findById(cat).get().products);
+        }
+
         Map<String, Object> map = new HashMap<String, Object>();
         if(lang.equals("en")){
             map.put("count",repository.count());
-            map.put("data",repository.findAll(pageable).stream()
+            map.put("data",products.stream()
                     .map(ProductService::MapToEng)
                     .collect(Collectors.toList()));
             return new ResponseEntity<>(map,HttpStatus.OK);
         }
         else {
             map.put("count",repository.count());
-            map.put("data",repository.findAll(pageable).stream()
+            map.put("data",products.stream()
                     .map(ProductService::MapToPl)
                     .collect(Collectors.toList()));
             return new ResponseEntity<>(map,HttpStatus.OK);

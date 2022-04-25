@@ -30,16 +30,17 @@ public class CartService {
     private OrderItem getProduct(ProductRequest request){
         Product product = null;
         OrderItem item = new OrderItem();
-        try{
-            if(productRepository.existsById(request.getProduct())){
-                product = productRepository.getById(request.getProduct());
-                item.setProduct(product);
-            }
+
+        if(productRepository.existsById(request.getProduct())){
+            product = productRepository.getById(request.getProduct());
+            item.setProduct(product);
             item.setQuantity(request.getQuantity());
             orderItemRepository.save(item);
-        }catch (Exception e){
+        }
+        else{
             return null;
         }
+
         return item;
     }
 
@@ -59,7 +60,9 @@ public class CartService {
     public ResponseEntity<?> addToCart(ProductRequest productItem, String jwt) {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
         OrderItem product = getProduct(productItem);
-
+        if(product == null){
+            return new ResponseEntity<>("product not found",HttpStatus.NOT_FOUND);
+        }
         if(userModel.getCart() == null){
             userModel.setCart(new Cart());
         }

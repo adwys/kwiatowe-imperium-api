@@ -2,6 +2,7 @@ package com.kwiatowe_imperium.api.controllers;
 
 
 import com.kwiatowe_imperium.api.models.Product;
+import com.kwiatowe_imperium.api.models.ProductRequest;
 import com.kwiatowe_imperium.api.servies.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/api/product", method = RequestMethod.POST)
-    public ResponseEntity<?> createProduct( @RequestBody Product request){
+    public ResponseEntity<?> createProduct( @RequestBody ProductRequest request){
         return service.create(request);
     }
 

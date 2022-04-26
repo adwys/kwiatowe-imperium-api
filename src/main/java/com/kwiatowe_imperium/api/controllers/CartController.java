@@ -1,7 +1,7 @@
 package com.kwiatowe_imperium.api.controllers;
 
 
-import com.kwiatowe_imperium.api.models.ProductRequest;
+import com.kwiatowe_imperium.api.models.OrderItemRequest;
 import com.kwiatowe_imperium.api.servies.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ public class CartController {
     private CartService cartService;
 
     @RequestMapping(value = "/cart", method = RequestMethod.POST)
-    public ResponseEntity<?> addToCart(@RequestBody ProductRequest productItem, @RequestHeader("Authorization") String jwt){
+    public ResponseEntity<?> addToCart(@RequestBody OrderItemRequest productItem, @RequestHeader("Authorization") String jwt){
         return cartService.addToCart(productItem,jwt);
     }
 

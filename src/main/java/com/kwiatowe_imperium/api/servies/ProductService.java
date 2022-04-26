@@ -1,10 +1,7 @@
 package com.kwiatowe_imperium.api.servies;
 
 
-import com.kwiatowe_imperium.api.models.Category;
-import com.kwiatowe_imperium.api.models.Image;
-import com.kwiatowe_imperium.api.models.Product;
-import com.kwiatowe_imperium.api.models.ProductDTO;
+import com.kwiatowe_imperium.api.models.*;
 import com.kwiatowe_imperium.api.repo.CategoryRepository;
 import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
@@ -95,7 +92,38 @@ public class ProductService {
 
 
 
-    public ResponseEntity<?> create(Product product){
+    public ResponseEntity<?> create(ProductRequest request){
+        Product product = new Product(
+                null,
+                request.getNameEn(),
+                request.getNamePl(),
+                request.getDescriptionEn(),
+                request.getDescriptionPl(),
+                request.getPrice(),
+                null,
+                null
+                );
+
+        if(request.getImages()!=null){
+            List<Image> images = new LinkedList<>();
+            for(int i=0;i<request.getImages().size();i++){
+                if(imageRepository.existsById(request.getImages().get(i))){
+                    images.add(imageRepository.findById(request.getImages().get(i)).get());
+                }
+            }
+            product.setImages(images);
+        }
+        if(request.getCategories()!=null){
+            List<Category> categories = new LinkedList<>();
+            for(int i=0;i<request.getCategories().size();i++){
+                if(categoryRepository.existsById(request.getCategories().get(i))){
+                    categories.add(categoryRepository.findById(request.getCategories().get(i)).get());
+                }
+            }
+            product.setCategories(categories);
+        }
+
+
         repository.save(product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }

@@ -108,7 +108,11 @@ public class HeroService {
         Hero hero = repository.findByMain();
         HeroReturn heroReturn;
         if(lang.equals("pl")){
-            CategoryHero h = new CategoryHero(hero.getCategory().getId(),hero.getCategory().getNamePl(),hero.getCategory().isVisible());
+            CategoryHero h = null;
+            if(hero.getCategory()!=null){
+                h = new CategoryHero(hero.getCategory().getId(),hero.getCategory().getNamePl(),hero.getCategory().isVisible());
+            }
+
             heroReturn = new HeroReturn(
                     hero.getId(),
                     hero.isMain(),
@@ -122,7 +126,10 @@ public class HeroService {
                     h
                     );
         }else{
-            CategoryHero h = new CategoryHero(hero.getCategory().getId(),hero.getCategory().getNameEn(),hero.getCategory().isVisible());
+            CategoryHero h = null;
+            if(hero.getCategory() != null){
+                h = new CategoryHero(hero.getCategory().getId(),hero.getCategory().getNameEn(),hero.getCategory().isVisible());
+            }
             heroReturn = new HeroReturn(
                     hero.getId(),
                     hero.isMain(),

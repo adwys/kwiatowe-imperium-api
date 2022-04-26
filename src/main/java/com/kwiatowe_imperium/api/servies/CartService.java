@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class CartService {
 
     CartRepository cartRepository;
 
-    private OrderItem getProduct(ProductRequest request){
+    private OrderItem getProduct(OrderItemRequest request){
         Product product = null;
         OrderItem item = new OrderItem();
 
@@ -64,7 +63,7 @@ public class CartService {
         return new ResponseEntity<>(productDTOList,HttpStatus.OK);
     }
 
-    public ResponseEntity<?> addToCart(ProductRequest productItem, String jwt) {
+    public ResponseEntity<?> addToCart(OrderItemRequest productItem, String jwt) {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
         OrderItem product = getProduct(productItem);
         if(product == null){

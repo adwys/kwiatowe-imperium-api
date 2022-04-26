@@ -83,6 +83,7 @@ public class ProductService {
 //        ProductDTO p = MapToPl();
         products = repository.findAll(pageable);
         if(categoryRepository.existsById(cat)){
+            count = categoryRepository.findById(cat).get().products.stream().count();
             products = new PageImpl<>(categoryRepository.findById(cat).get().products);
         }
         if(categoryRepository.findByNamePlIgnoreCase(catName) != null){

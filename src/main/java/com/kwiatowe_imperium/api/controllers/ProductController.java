@@ -37,8 +37,9 @@ public class ProductController {
     ResponseEntity<?> findAllProduct(@RequestParam(value = "page",required = false,defaultValue = "0") Integer page,
                                      @RequestParam(value = "size",required = false,defaultValue = "10") Integer size,
                                      @RequestParam(value = "cat",required = false,defaultValue = "-1") Long cat,
+                                     @RequestParam(value = "catName",required = false,defaultValue = "none") String catName,
                                      @RequestHeader("accept-language") String lang){
-        return service.readAllProduct(page,size,cat,lang);
+        return service.readAllProduct(page,size,cat,catName,lang);
     }
 
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)

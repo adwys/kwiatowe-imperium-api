@@ -45,12 +45,18 @@ public class ProductService {
 
     }
 
-    public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String lang){
+    public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String catName,String lang){
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products;
         products = repository.findAll(pageable);
         if(categoryRepository.existsById(cat)){
             products = new PageImpl<>(categoryRepository.findById(cat).get().products);
+        }
+        if(categoryRepository.findByNamePlIgnoreCase(catName) != null){
+            products = new PageImpl<>(categoryRepository.findByNamePlIgnoreCase(catName).products);
+        }
+        if(categoryRepository.findByNameEnIgnoreCase(catName) != null){
+            products = new PageImpl<>(categoryRepository.findByNameEnIgnoreCase(catName).products);
         }
 
         Map<String, Object> map = new HashMap<String, Object>();

@@ -86,9 +86,11 @@ public class ProductService {
             products = new PageImpl<>(categoryRepository.findById(cat).get().products);
         }
         if(categoryRepository.findByNamePlIgnoreCase(catName) != null){
+            count = categoryRepository.findByNamePlIgnoreCase(catName).products.stream().count();
             products = new PageImpl<>(categoryRepository.findByNamePlIgnoreCase(catName).products);
         }
         if(categoryRepository.findByNameEnIgnoreCase(catName) != null){
+            count = categoryRepository.findByNameEnIgnoreCase(catName).products.stream().count();
             products = new PageImpl<>(categoryRepository.findByNameEnIgnoreCase(catName).products);
         }
 

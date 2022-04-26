@@ -19,8 +19,8 @@ public class CartController {
     }
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
-    public ResponseEntity<?> showCart(@RequestHeader("Authorization") String jwt){
-        return cartService.showCart(jwt);
+    public ResponseEntity<?> showCart(@RequestHeader("Authorization") String jwt,@RequestHeader("accept-language") String lang){
+        return cartService.showCart(jwt, lang);
     }
 
     @RequestMapping(value = "/cart", method = RequestMethod.DELETE)

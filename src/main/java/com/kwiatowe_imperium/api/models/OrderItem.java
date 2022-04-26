@@ -2,6 +2,7 @@ package com.kwiatowe_imperium.api.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kwiatowe_imperium.api.servies.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,15 @@ public class OrderItem implements Serializable {
     @JsonIgnore
     private Cart cart;
 
+    public ProductDTO getDTO(String lang){
+        if(lang.equals("en")){
+            return ProductService.MapToEng(product);
+        }
+        else{
+            return ProductService.MapToPl(product);
+        }
+
+    }
 
 //    @Transient
 //    public Double getTotalPrice() {

@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -52,9 +54,14 @@ public class CartService {
         return new ResponseEntity<>("cart droped",HttpStatus.OK);
     }
 
-    public ResponseEntity<?> showCart(String jwt){
+    public ResponseEntity<?> showCart(String jwt,String lang){
         UserModel userModel = userDetailsServices.jwtUser(jwt);
-        return new ResponseEntity<>(userModel.getCart(),HttpStatus.OK);
+        List<OrderItem> orderItemList =  userModel.getCart().getProducts();
+        List<ProductDTO> productDTOList = new LinkedList<>();
+        for(int i =0;i<orderItemList.size();i++){
+            productDTOList.add(orderItemList.get(i).getDTO(lang));
+        }
+        return new ResponseEntity<>(productDTOList,HttpStatus.OK);
     }
 
     public ResponseEntity<?> addToCart(ProductRequest productItem, String jwt) {

@@ -27,6 +27,8 @@ public interface ProductRepository extends JpaRepository<Product,Long>, PagingAn
     @Query("SELECT COUNT(p) FROM Product p")
     long count();
 
+
+
     @Override
     Page<Product> findAll(Pageable pageable);
 }

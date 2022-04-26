@@ -79,7 +79,7 @@ public class ProductService {
     public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String catName,String lang){
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products;
-
+        Long count = repository.count();
 //        ProductDTO p = MapToPl();
         products = repository.findAll(pageable);
         if(categoryRepository.existsById(cat)){
@@ -94,7 +94,7 @@ public class ProductService {
 
         Map<String, Object> map = new HashMap<String, Object>();
         if(lang.equals("en")){
-            map.put("count",repository.count());
+            map.put("count",count);
             map.put("data",products.stream()
                     .map(ProductService::MapToEng)
                     .collect(Collectors.toList()));

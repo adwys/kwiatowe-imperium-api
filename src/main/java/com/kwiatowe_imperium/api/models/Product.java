@@ -54,10 +54,14 @@ public class Product implements Serializable {
 
 
     public void updateFrom(final Product source) {
+
         nameEn = source.nameEn;
-        namePl = source.namePl;
+        if(nameEn == null)nameEn = "";
+        if(source.namePl != null)namePl = source.namePl;
         descriptionEn = source.descriptionEn;
+        if(descriptionEn == null)descriptionEn = "";
         descriptionPl = source.descriptionPl;
+        if(descriptionPl == null)descriptionPl = "";
         price = source.price;
         images = source.images;
     }

@@ -56,8 +56,11 @@ public class UserModel {
     public void updateForm(final UserModel source){
         name = source.name;
         address = source.address;
+        if(address == null)address = "";
         postalCode = source.postalCode;
+        if(postalCode == null)postalCode = "";
         city = source.city;
+        if(city == null)city = "";
         surname = source.surname;
     }
 

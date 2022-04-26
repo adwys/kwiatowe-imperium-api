@@ -137,20 +137,20 @@ public class CategoryService {
         return new CategoryDTO(
                 c.getId(),
                 c.getNamePl(),
-                c.isVisible(),
-                c.getProducts().stream()
-                        .map(ProductService::MapToPl)
-                        .collect(Collectors.toList()));
+                c.isVisible());
+//                c.getProducts().stream()
+//                        .map(ProductService::MapToPl)
+//                        .collect(Collectors.toList()));
     }
 
     public static CategoryDTO MapToEng(Category c){
         return new CategoryDTO(
                 c.getId(),
                 c.getNameEn(),
-                c.isVisible(),
-                c.getProducts().stream()
-                        .map(ProductService::MapToEng)
-                        .collect(Collectors.toList()));
+                c.isVisible());
+//                c.getProducts().stream()
+//                        .map(ProductService::MapToEng)
+//                        .collect(Collectors.toList()));
     }
 
 

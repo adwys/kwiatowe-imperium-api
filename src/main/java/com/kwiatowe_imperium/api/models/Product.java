@@ -50,7 +50,6 @@ public class Product implements Serializable {
 
     @ManyToMany
     @JoinColumn(name = "product_id",referencedColumnName = "id")
-    @JsonIgnore
     public List<Category> categories;
 
 

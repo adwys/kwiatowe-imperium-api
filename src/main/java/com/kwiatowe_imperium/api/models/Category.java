@@ -1,5 +1,6 @@
 package com.kwiatowe_imperium.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,10 +30,11 @@ public class Category implements Serializable {
     @NotNull
     private String nameEn;
 
-//    @Type(type="true_false")
     private boolean isVisible;
 
+
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     public List<Product> products;
 
     public void updateFrom(final Category source) {

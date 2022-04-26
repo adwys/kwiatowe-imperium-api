@@ -45,9 +45,42 @@ public class ProductService {
 
     }
 
+    public ResponseEntity<?> readFullProduct(Long id,String lang){
+        if(!repository.existsById(id)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Product product = repository.findById(id).get();
+        ProductReturn productReturn;
+        if(lang.equals("en")){
+            productReturn = new ProductReturn(
+                    product.getNameEn(),
+                    product.getNamePl(),
+                    product.getDescriptionEn(),
+                    product.getDescriptionPl(),
+                    product.getPrice(),
+                    product.images,
+                    product.categories.stream().map(CategoryService::MapToEng).collect(Collectors.toList())
+            );
+        }
+        else {
+            productReturn = new ProductReturn(
+                    product.getNameEn(),
+                    product.getNamePl(),
+                    product.getDescriptionEn(),
+                    product.getDescriptionPl(),
+                    product.getPrice(),
+                    product.images,
+                    product.categories.stream().map(CategoryService::MapToPl).collect(Collectors.toList())
+            );
+        }
+        return new ResponseEntity<>(productReturn,HttpStatus.OK);
+    }
+
     public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String catName,String lang){
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products;
+
+//        ProductDTO p = MapToPl();
         products = repository.findAll(pageable);
         if(categoryRepository.existsById(cat)){
             products = new PageImpl<>(categoryRepository.findById(cat).get().products);
@@ -79,12 +112,16 @@ public class ProductService {
 
     public static ProductDTO MapToPl(Product p){
 
-        return new ProductDTO(p.getId(),p.getNamePl(),p.getDescriptionPl(),p.getPrice(),p.getImages(),p.getCategories());
+        return new ProductDTO(
+                p.getId(),
+                p.getNamePl(),
+                p.getDescriptionPl(),
+                p.getPrice(),
+                p.getImages(),
+                p.getCategories());
     }
 
     public static ProductDTO MapToEng(Product p){
-        if(p.getDescriptionEn() == null)
-            return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionPl(),p.getPrice(),p.getImages(),p.getCategories());
         return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionEn(),p.getPrice(),p.getImages(),p.getCategories());
     }
 
@@ -114,7 +151,9 @@ public class ProductService {
             List<Image> images = new LinkedList<>();
             for(int i=0;i<request.getImages().size();i++){
                 if(imageRepository.existsById(request.getImages().get(i))){
+                    imageRepository.findById(request.getImages().get(i)).get().setProduct(product);
                     images.add(imageRepository.findById(request.getImages().get(i)).get());
+
                 }
             }
             product.setImages(images);

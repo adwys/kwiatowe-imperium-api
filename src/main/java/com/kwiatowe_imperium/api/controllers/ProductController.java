@@ -42,6 +42,11 @@ public class ProductController {
         return service.readAllProduct(page,size,cat,catName,lang);
     }
 
+    @RequestMapping(value = "/api/product/full/{id}",method = RequestMethod.GET)
+    ResponseEntity<?> readFullProduct(@PathVariable Long id,@RequestHeader("accept-language") String lang){
+        return service.readFullProduct(id,lang);
+    }
+
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)
     ResponseEntity<?> findProduct(@PathVariable Long id,@RequestHeader("accept-language") String lang){
         return service.read(id,lang);

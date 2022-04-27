@@ -29,6 +29,8 @@ public class ProductService {
 
     private final CategoryRepository categoryRepository;
 
+    private final CategoryService categoryService;
+
     public ResponseEntity<?> readByName(String name){
         try {
             if(repository.findByNameEnIgnoreCase(name) != null){
@@ -205,6 +207,14 @@ public class ProductService {
                     product.updateFrom(model);
                     repository.save(product);
                 });
+//
+//        for(int i =0 ;i<toUpdate.categories.size();i++){
+//            if(categoryRepository.existsById(toUpdate.categories.get(i).getId())){
+//                categoryRepository.findById(toUpdate.categories.get(i).getId()).get().products.add(repository.findById(id).get());
+//                repository.findById(id).get().categories.add(categoryRepository.findById(toUpdate.categories.get(i).getId()).get());
+//            }
+//        }
+
         return new ResponseEntity<>(model, HttpStatus.OK);
 
     }

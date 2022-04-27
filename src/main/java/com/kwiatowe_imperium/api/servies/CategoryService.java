@@ -47,6 +47,10 @@ public class CategoryService {
 
     }
 
+    public ResponseEntity<?> readCategortFull(Long id){
+        return new ResponseEntity<>(repository.findById(id),HttpStatus.OK);
+    }
+
     public ResponseEntity<?> readAllIfVisible(String lang) {
         if(lang.equals("en")){
             return new ResponseEntity<>(repository.findAllByVisibleIsTrue()

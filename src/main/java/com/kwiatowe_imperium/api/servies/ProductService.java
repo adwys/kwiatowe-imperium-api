@@ -92,7 +92,7 @@ public class ProductService {
             count = categoryRepository.findByNamePlIgnoreCase(catName).products.stream().count();
             products = new PageImpl<>(categoryRepository.findByNamePlIgnoreCase(catName).products);
         }
-        if(categoryRepository.findByNameEnIgnoreCase(catName) != null){
+        else if(categoryRepository.findByNameEnIgnoreCase(catName) != null){
             count = categoryRepository.findByNameEnIgnoreCase(catName).products.stream().count();
             products = new PageImpl<>(categoryRepository.findByNameEnIgnoreCase(catName).products);
         }
@@ -106,7 +106,7 @@ public class ProductService {
             return new ResponseEntity<>(map,HttpStatus.OK);
         }
         else {
-            map.put("count",repository.count());
+            map.put("count",count);
             map.put("data",products.stream()
                     .map(ProductService::MapToPl)
                     .collect(Collectors.toList()));

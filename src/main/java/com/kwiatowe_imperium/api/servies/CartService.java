@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -57,10 +59,15 @@ public class CartService {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
         List<OrderItem> orderItemList =  userModel.getCart().getProducts();
         List<ProductDTO> productDTOList = new LinkedList<>();
+        List<Map<String,Object>> list = new LinkedList<>();
         for(int i =0;i<orderItemList.size();i++){
-            productDTOList.add(orderItemList.get(i).getDTO(lang));
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("quantity",orderItemList.get(i).getQuantity());
+            map.put("product",orderItemList.get(i).getDTO(lang));
+            list.add(map);
         }
-        return new ResponseEntity<>(productDTOList,HttpStatus.OK);
+
+        return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
     public ResponseEntity<?> addToCart(OrderItemRequest productItem, String jwt) {

@@ -86,6 +86,15 @@ public class CategoryService {
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
+    public ResponseEntity<?> detach(Long parent_id, Long child_id){
+        Product source = productRepository.findById(child_id).get();
+        Category category = repository.findById(parent_id).get();
+        category.products.remove(source);
+        source.categories.remove(category);
+        repository.save(category);
+        return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
     public ResponseEntity<?> create(Category item) {
         repository.save(item);
         return new ResponseEntity<>(item, HttpStatus.OK);

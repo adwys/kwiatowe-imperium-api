@@ -58,7 +58,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.PATCH)
-    ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product){
+    ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductRequest product){
         return service.update(id,product);
     }
 

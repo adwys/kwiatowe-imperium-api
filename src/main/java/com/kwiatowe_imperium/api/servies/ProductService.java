@@ -127,7 +127,13 @@ public class ProductService {
     }
 
     public static ProductDTO MapToEng(Product p){
-        return new ProductDTO(p.getId(),p.getNameEn(),p.getDescriptionEn(),p.getPrice(),p.getImages(),p.getCategories());
+        return new ProductDTO(
+                p.getId(),
+                p.getNameEn(),
+                p.getDescriptionEn(),
+                p.getPrice(),
+                p.getImages(),
+                p.getCategories());
     }
 
     public ResponseEntity<?> addImageToProduct(Long parent_id, Long child_id){
@@ -191,32 +197,53 @@ public class ProductService {
                 ,HttpStatus.OK);
     }
 
-    public ResponseEntity<?> update(Long id, Product toUpdate){
+    public ResponseEntity<?> update(Long id, ProductRequest request) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        Product model;
-        try {
-            model = toUpdate;
-        }catch (Exception e){
-            return new ResponseEntity<>("bad body",HttpStatus.BAD_REQUEST);
+        Product product = repository.findById(id).get();
+        product.setNameEn(request.getNameEn());
+        product.setNamePl(request.getNamePl());
+        product.setPrice(request.getPrice());
+        product.setDescriptionEn(request.getDescriptionEn());
+        product.setDescriptionPl(request.getDescriptionPl());
+
+        List<Image> imageList = imageRepository.findByProductId(product.getId());
+        for(int i =0;i<imageList.size();i++){
+            imageList.get(i).setProduct(null);
         }
 
-        repository.findById(id)
-                .ifPresent(product -> {
-                    product.updateFrom(model);
-                    repository.save(product);
-                });
-//
-//        for(int i =0 ;i<toUpdate.categories.size();i++){
-//            if(categoryRepository.existsById(toUpdate.categories.get(i).getId())){
-//                categoryRepository.findById(toUpdate.categories.get(i).getId()).get().products.add(repository.findById(id).get());
-//                repository.findById(id).get().categories.add(categoryRepository.findById(toUpdate.categories.get(i).getId()).get());
-//            }
-//        }
+        if (request.getImages() != null) {
+            List<Image> images = new LinkedList<>();
+            for (int i = 0; i < request.getImages().size(); i++) {
+                if (imageRepository.existsById(request.getImages().get(i))) {
+                    imageRepository.findById(request.getImages().get(i)).get().setProduct(product);
+                    images.add(imageRepository.findById(request.getImages().get(i)).get());
 
-        return new ResponseEntity<>(model, HttpStatus.OK);
+                }
+            }
+            product.setImages(images);
+        }
 
+
+        for(int i =0;i<product.categories.size();i++){
+            Category category = categoryRepository.findById(product.categories.get(i).getId()).get();
+            categoryService.detach(category.getId(),product.getId());
+//            category.products.remove(product.getId());
+//            categoryRepository.save(category);
+        }
+
+
+        if (request.getCategories() != null) {
+            List<Category> categories = new LinkedList<>();
+            for (int i = 0; i < request.getCategories().size(); i++) {
+                if (categoryRepository.existsById(request.getCategories().get(i))) {
+                    categories.add(categoryRepository.findById(request.getCategories().get(i)).get());
+                }
+            }
+        }
+            repository.save(product);
+            return new ResponseEntity<>(product, HttpStatus.OK);
     }
     public ResponseEntity<?> delete(Long id){
         if (!repository.existsById(id)) {

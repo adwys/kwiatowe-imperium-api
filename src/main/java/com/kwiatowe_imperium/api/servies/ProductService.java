@@ -136,6 +136,26 @@ public class ProductService {
                 p.getCategories());
     }
 
+    public static ProductFullMap FullMaptoPl(Product p){
+        return new ProductFullMap(
+                p.getId(),
+                p.getNamePl(),
+                p.getDescriptionPl(),
+                p.getPrice(),
+                p.getImages(),
+                p.getCategories().stream().map(CategoryService::MapToPl).collect(Collectors.toList()));
+    }
+    public static ProductFullMap FullMaptoEn(Product p){
+        return new ProductFullMap(
+                p.getId(),
+                p.getNameEn(),
+                p.getDescriptionEn(),
+                p.getPrice(),
+                p.getImages(),
+                p.getCategories().stream().map(CategoryService::MapToEng).collect(Collectors.toList()));
+    }
+
+
     public ResponseEntity<?> addImageToProduct(Long parent_id, Long child_id){
         Image sourceImage = imageRepository.findById(child_id).get();
         Product product = repository.findById(parent_id).get();
@@ -190,13 +210,11 @@ public class ProductService {
         }
         if(lang.equals("en")){
             return new ResponseEntity<>(
-                    repository.findById(id)
-                    .map(ProductService::MapToEng)
+                    repository.findById(id).map(ProductService::FullMaptoEn)
                     ,HttpStatus.OK);
         }
         return new ResponseEntity<>(
-                repository.findById(id)
-                .map(ProductService::MapToPl)
+                repository.findById(id).map(ProductService::FullMaptoPl)
                 ,HttpStatus.OK);
     }
 

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -72,6 +73,18 @@ public class CartService {
 
     public ResponseEntity<?> addToCart(OrderItemRequest productItem, String jwt) {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
+
+        Optional<OrderItem> o = userModel.getCart().getProducts()
+                .stream()
+                .filter(a -> a.getProduct().getId().equals(productItem.getProduct()))
+                .findFirst();
+        if(o.isPresent()){
+            o.get().setQuantity(o.get().getQuantity()+productItem.getQuantity());
+            orderItemRepository.save(o.get());
+            repository.save(userModel);
+            return new ResponseEntity<>(userModel,HttpStatus.OK);
+        }
+
         OrderItem product = getProduct(productItem);
         if(product == null){
             return new ResponseEntity<>("product not found",HttpStatus.NOT_FOUND);

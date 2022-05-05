@@ -7,10 +7,7 @@ import com.kwiatowe_imperium.api.repo.ImageRepository;
 import com.kwiatowe_imperium.api.repo.ProductRepository;
 import lombok.AllArgsConstructor;
 import netscape.javascript.JSObject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,11 +75,10 @@ public class ProductService {
         return new ResponseEntity<>(productReturn,HttpStatus.OK);
     }
 
-    public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String catName,String lang){
-        Pageable pageable = PageRequest.of(page, size);
+    public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String catName,String sortBy,String lang){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Product> products;
         Long count = repository.count();
-//        ProductDTO p = MapToPl();
         products = repository.findAll(pageable);
         if(categoryRepository.existsById(cat)){
             count = categoryRepository.findById(cat).get().products.stream().count();

@@ -37,6 +37,7 @@ public class UserModel {
     @NonNull
     private String email;
     @NonNull
+    @JsonIgnore
     private String password;
 
 
@@ -50,6 +51,7 @@ public class UserModel {
     public Set<Role> roles = new HashSet<>();
 
     @OneToOne(cascade=CascadeType.ALL)
+    @JsonIgnore
     private Cart cart;
 
 

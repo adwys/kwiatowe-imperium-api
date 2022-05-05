@@ -16,13 +16,12 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long>, PagingAndSortingRepository<Product, Long> {
 
-//    @Query(value ="SELECT p.id,p.name FROM Product p",nativeQuery = true)
     List<Product> findAll();
     Product findByNameEnIgnoreCase(String nameEn);
     Product findByNamePlIgnoreCase(String namePl);
 
-//    @Query("SELECT * from Product where Product.categories =")
-//    List<Product> findProductsBy(int category);
+    Page<Product> findByNamePlContaining(String namePl,Pageable pageable);
+    Page<Product> findByNameEnContaining(String namePl,Pageable pageable);
 
     @Query("SELECT COUNT(p) FROM Product p")
     long count();

@@ -39,8 +39,9 @@ public class ProductController {
                                      @RequestParam(value = "cat",required = false,defaultValue = "-1") Long cat,
                                      @RequestParam(value = "catName",required = false,defaultValue = "none") String catName,
                                      @RequestParam(value = "sort",required = false,defaultValue = "id") String sortBy,
+                                     @RequestParam(value = "q",required = false,defaultValue = "none") String querry,
                                      @RequestHeader("accept-language") String lang){
-        return service.readAllProduct(page,size,cat,catName,sortBy,lang);
+        return service.readAllProduct(page,size,cat,catName,sortBy,querry,lang);
     }
 
     @RequestMapping(value = "/api/product/full/{id}",method = RequestMethod.GET)

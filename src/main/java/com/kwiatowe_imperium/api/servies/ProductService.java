@@ -75,11 +75,12 @@ public class ProductService {
         return new ResponseEntity<>(productReturn,HttpStatus.OK);
     }
 
-    public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String catName,String sortBy,String lang){
+    public  ResponseEntity<?> readAllProduct(int page,int size,Long cat,String catName,String sortBy,String querry,String lang){
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Product> products;
         Long count = repository.count();
         products = repository.findAll(pageable);
+
         if(categoryRepository.existsById(cat)){
             count = categoryRepository.findById(cat).get().products.stream().count();
             products = new PageImpl<>(categoryRepository.findById(cat).get().products);
@@ -95,17 +96,29 @@ public class ProductService {
 
         Map<String, Object> map = new HashMap<String, Object>();
         if(lang.equals("en")){
+
             map.put("count",count);
-            map.put("data",products.stream()
-                    .map(ProductService::MapToEng)
-                    .collect(Collectors.toList()));
+            if(!querry.equals("none")){
+                map.put("data",repository.findByNameEnContaining(querry,pageable));
+            }
+            else {
+                map.put("data",products.stream()
+                        .map(ProductService::MapToEng)
+                        .collect(Collectors.toList()));
+            }
+
             return new ResponseEntity<>(map,HttpStatus.OK);
         }
         else {
             map.put("count",count);
-            map.put("data",products.stream()
-                    .map(ProductService::MapToPl)
-                    .collect(Collectors.toList()));
+            if(!querry.equals("none")){
+                map.put("data",repository.findByNamePlContaining(querry,pageable));
+            }
+            else {
+                map.put("data",products.stream()
+                        .map(ProductService::MapToEng)
+                        .collect(Collectors.toList()));
+            }
             return new ResponseEntity<>(map,HttpStatus.OK);
         }
 

@@ -71,6 +71,20 @@ public class CartService {
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
+    public ResponseEntity<?> deleteForCart(Long id,String jwt){
+        UserModel userModel = userDetailsServices.jwtUser(jwt);
+        Optional<OrderItem> o = userModel.getCart().getProducts()
+                .stream()
+                .filter(a -> a.getProduct().getId().equals(id))
+                .findFirst();
+        if(o.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        o.get().setCart(null);
+        repository.save(userModel);
+        return new ResponseEntity<>(o.get(),HttpStatus.OK);
+    }
+
     public ResponseEntity<?> addToCart(OrderItemRequest productItem, String jwt) {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
 

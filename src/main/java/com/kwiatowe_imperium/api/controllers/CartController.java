@@ -17,6 +17,10 @@ public class CartController {
     public ResponseEntity<?> addToCart(@RequestBody OrderItemRequest productItem, @RequestHeader("Authorization") String jwt){
         return cartService.addToCart(productItem,jwt);
     }
+    @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteFromCart(@PathVariable Long id, @RequestHeader("Authorization") String jwt){
+        return cartService.deleteForCart(id,jwt);
+    }
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     public ResponseEntity<?> showCart(@RequestHeader("Authorization") String jwt,@RequestHeader("accept-language") String lang){

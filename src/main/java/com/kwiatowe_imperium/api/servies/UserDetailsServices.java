@@ -64,7 +64,21 @@ public class UserDetailsServices implements UserDetailsService {
         return userModel.get();
     }
 
-    public ResponseEntity updateUser(String token,UserModel model){
+    public ResponseEntity<?> getAllUsers(){
+        return new ResponseEntity<>(repository.findAll(),HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> deleteUser(Long id){
+
+        Optional<UserModel> userModel = repository.findById(id);
+        if(userModel.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        repository.delete(userModel.get());
+        return new ResponseEntity<>(userModel.get(),HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> updateUser(String token,UserModel model){
         String jwt = token.substring(7);
         Optional<UserModel> userModel;
 
@@ -81,7 +95,7 @@ public class UserDetailsServices implements UserDetailsService {
         return new ResponseEntity(model,HttpStatus.OK);
     }
 
-    public ResponseEntity getUserByToken(String token){
+    public ResponseEntity<?> getUserByToken(String token){
         UserModel userModel;
         String[] p=token.split("\\s");
         try {

@@ -80,7 +80,6 @@ public class SecurityController {
     @RequestMapping(value = "/auth/me",method = RequestMethod.GET)
     private ResponseEntity<?> getUser(@RequestHeader("Authorization") String jwt){
         return userDetailsServices.getUserByToken(jwt);
-
     }
     @RequestMapping(value = "/auth/me",method = RequestMethod.PUT)
     private ResponseEntity<?> setAdmin(@RequestHeader("Authorization") String jwt){
@@ -97,5 +96,14 @@ public class SecurityController {
         return registrationService.updatePassword(jwt,request);
     }
 
+    @RequestMapping(value = "/users/all",method = RequestMethod.GET)
+    private ResponseEntity<?> getUser(){
+        return userDetailsServices.getAllUsers();
+    }
+
+    @RequestMapping(value = "/users/{id}",method = RequestMethod.DELETE)
+    private ResponseEntity<?> deleteUser(@PathVariable Long id){
+        return userDetailsServices.deleteUser(id);
+    }
 
 }

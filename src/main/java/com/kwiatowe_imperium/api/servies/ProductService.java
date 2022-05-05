@@ -185,6 +185,9 @@ public class ProductService {
     }
 
     public ResponseEntity<?> read(Long id, String lang){
+        if(!repository.existsById(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         if(lang.equals("en")){
             return new ResponseEntity<>(
                     repository.findById(id)

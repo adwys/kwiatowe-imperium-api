@@ -99,7 +99,8 @@ public class ProductService {
 
             map.put("count",count);
             if(!querry.equals("none")){
-                map.put("data",repository.findByNameEnContaining(querry,pageable));
+                map.put("data",repository.findByNameEnContaining(querry,pageable)
+                .map(ProductService::MapToEng).stream().collect(Collectors.toList()));
             }
             else {
                 map.put("data",products.stream()
@@ -112,7 +113,8 @@ public class ProductService {
         else {
             map.put("count",count);
             if(!querry.equals("none")){
-                map.put("data",repository.findByNamePlContaining(querry,pageable));
+                map.put("data",repository.findByNamePlContaining(querry,pageable)
+                .map(ProductService::MapToPl).stream().collect(Collectors.toList()));
             }
             else {
                 map.put("data",products.stream()

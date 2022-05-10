@@ -97,29 +97,35 @@ public class ProductService {
         Map<String, Object> map = new HashMap<String, Object>();
         if(lang.equals("en")){
 
-            map.put("count",count);
+
             if(!querry.equals("none")){
                 map.put("data",repository.findByNameEnContaining(querry,pageable)
                 .map(ProductService::MapToEng).stream().collect(Collectors.toList()));
+                map.put("count",repository.findByNameEnContaining(querry,pageable)
+                        .map(ProductService::MapToEng).stream().collect(Collectors.toList()).size());
             }
             else {
                 map.put("data",products.stream()
                         .map(ProductService::MapToEng)
                         .collect(Collectors.toList()));
+                map.put("count",count);
             }
 
             return new ResponseEntity<>(map,HttpStatus.OK);
         }
         else {
-            map.put("count",count);
+
             if(!querry.equals("none")){
                 map.put("data",repository.findByNamePlContaining(querry,pageable)
                 .map(ProductService::MapToPl).stream().collect(Collectors.toList()));
+                map.put("count",repository.findByNamePlContaining(querry,pageable)
+                        .map(ProductService::MapToPl).stream().collect(Collectors.toList()).size());
             }
             else {
                 map.put("data",products.stream()
                         .map(ProductService::MapToEng)
                         .collect(Collectors.toList()));
+                map.put("count",count);
             }
             return new ResponseEntity<>(map,HttpStatus.OK);
         }
@@ -270,10 +276,13 @@ public class ProductService {
             List<Category> categories = new LinkedList<>();
             for (int i = 0; i < request.getCategories().size(); i++) {
                 if (categoryRepository.existsById(request.getCategories().get(i))) {
+                    categoryRepository.findById(request.getCategories().get(i)).get().products.add(product);
                     categories.add(categoryRepository.findById(request.getCategories().get(i)).get());
                 }
             }
+            product.setCategories(categories);
         }
+
             repository.save(product);
             return new ResponseEntity<>(product, HttpStatus.OK);
     }

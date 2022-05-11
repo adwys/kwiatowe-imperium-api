@@ -21,12 +21,15 @@ import org.springframework.stereotype.Service;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class UserDetailsServices implements UserDetailsService {
 
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @Autowired
     private UserRepository repository;
@@ -76,6 +79,30 @@ public class UserDetailsServices implements UserDetailsService {
         }
         repository.delete(userModel.get());
         return new ResponseEntity<>(userModel.get(),HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<?> MailSend(String jwt, Date time){
+
+        UserModel userModel = jwtUser(jwt);
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH,time.getMonth());
+        c.set(Calendar.DAY_OF_MONTH,time.getDay());
+        c.set(Calendar.HOUR,time.getHours());
+        emailSenderService.sendEmail(
+                userModel.getEmail(),
+                "Kwiatowe Przypomnienie :)",
+                "Przypominamy o urodzinkach XD");
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }, c.getTime(), 86400000);
+
+        return new ResponseEntity<>("date set",HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateUser(String token,UserModel model){

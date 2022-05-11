@@ -15,6 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @RestController
 @AllArgsConstructor
 public class SecurityController {
@@ -90,6 +93,12 @@ public class SecurityController {
     private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt, @RequestBody UserModel user){
         return userDetailsServices.updateUser(jwt,user);
     }
+
+    @RequestMapping(value = "/auth/me/mail",method = RequestMethod.POST)
+    private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt, @RequestBody Date time){
+        return userDetailsServices.MailSend(jwt,time);
+    }
+
 
     @RequestMapping(value = "/auth/me/passwordChange",method = RequestMethod.PATCH)
     private ResponseEntity<?> updatePassword(@RequestHeader("Authorization") String jwt, @RequestBody ChangePasswordRequest request){

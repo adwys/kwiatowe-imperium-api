@@ -123,7 +123,7 @@ public class ProductService {
             }
             else {
                 map.put("data",products.stream()
-                        .map(ProductService::MapToEng)
+                        .map(ProductService::MapToPl)
                         .collect(Collectors.toList()));
                 map.put("count",count);
             }

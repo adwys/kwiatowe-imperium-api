@@ -87,20 +87,22 @@ public class UserDetailsServices implements UserDetailsService {
         UserModel userModel = jwtUser(jwt);
 
         Calendar c = Calendar.getInstance();
+//        c.set(Calendar.YEAR,time.getYear());
         c.set(Calendar.MONTH,time.getMonth());
         c.set(Calendar.DAY_OF_MONTH,time.getDay());
-        c.set(Calendar.HOUR,time.getHours());
-        emailSenderService.sendEmail(
-                userModel.getEmail(),
-                "Kwiatowe Przypomnienie :)",
-                "Przypominamy o urodzinkach XD");
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }, c.getTime(), 86400000);
+        c.set(Calendar.HOUR,14);
+        System.out.println(time.getHours());
+        c.set(Calendar.MINUTE,time.getMinutes());
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                emailSenderService.sendEmail(
+                        userModel.getEmail(),
+                        "Przypomnienie :)",
+                        c.getTime().toString());
+            }
+        }, c.getTime(), 86400000);
 
         return new ResponseEntity<>("date set",HttpStatus.OK);
     }

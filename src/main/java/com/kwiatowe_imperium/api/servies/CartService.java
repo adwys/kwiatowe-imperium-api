@@ -31,44 +31,71 @@ public class CartService {
 
     CartRepository cartRepository;
 
-    private OrderItem getProduct(OrderItemRequest request){
+    private OrderItem getProduct(OrderItemRequest request) {
         Product product = null;
         OrderItem item = new OrderItem();
 
-        if(productRepository.existsById(request.getProduct())){
+        if (productRepository.existsById(request.getProduct())) {
             product = productRepository.getById(request.getProduct());
             item.setProduct(product);
             item.setQuantity(request.getQuantity());
             orderItemRepository.save(item);
-        }
-        else{
+        } else {
             return null;
         }
 
         return item;
     }
 
-    public ResponseEntity<?> dropCart(String jwt){
+    public ResponseEntity<?> dropCart(String jwt) {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
         cartRepository.delete(userModel.getCart());
         userModel.setCart(new Cart());
         repository.save(userModel);
-        return new ResponseEntity<>("cart droped",HttpStatus.OK);
+        return new ResponseEntity<>("cart droped", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> showCart(String jwt,String lang){
+    public ResponseEntity<?> showCart(String jwt, String lang) {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
-        List<OrderItem> orderItemList =  userModel.getCart().getProducts();
+        List<OrderItem> orderItemList = userModel.getCart().getProducts();
         List<ProductDTO> productDTOList = new LinkedList<>();
-        List<Map<String,Object>> list = new LinkedList<>();
-        for(int i =0;i<orderItemList.size();i++){
+        List<Map<String, Object>> list = new LinkedList<>();
+        for (int i = 0; i < orderItemList.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("quantity",orderItemList.get(i).getQuantity());
-            map.put("product",orderItemList.get(i).getDTO(lang));
+            map.put("quantity", orderItemList.get(i).getQuantity());
+            map.put("product", orderItemList.get(i).getDTO(lang));
             list.add(map);
         }
 
-        return new ResponseEntity<>(list,HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> buyCart(String jwt) {
+        UserModel userModel = userDetailsServices.jwtUser(jwt);
+        userModel.getCart().setOrdered(true);
+        userModel.getCart().setUserModel(null);
+        cartRepository.save(userModel.getCart());
+        userModel.setCart(new Cart());
+
+        repository.save(userModel);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> cartsToFinalize(){
+
+        return new ResponseEntity<>(cartRepository.findAllByOrderedTrue() ,HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> finalizeCart(Long id){
+        Cart cart;
+        try {
+            cart = cartRepository.findById(id).get();
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        cartRepository.delete(cart);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteForCart(Long id,String jwt){

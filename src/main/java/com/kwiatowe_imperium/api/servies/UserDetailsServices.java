@@ -99,7 +99,7 @@ public class UserDetailsServices implements UserDetailsService {
             public void run() {
                 emailSenderService.sendEmail(
                         userModel.getEmail(),
-                        "Przypomnienie :)",
+                        "Przypomnienie",
                         c.getTime().toString());
             }
         }, c.getTime(), 86400000);

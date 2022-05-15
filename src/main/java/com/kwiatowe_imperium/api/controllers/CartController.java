@@ -17,6 +17,23 @@ public class CartController {
     public ResponseEntity<?> addToCart(@RequestBody OrderItemRequest productItem, @RequestHeader("Authorization") String jwt){
         return cartService.addToCart(productItem,jwt);
     }
+
+    @RequestMapping(value = "/cart/buy", method = RequestMethod.POST)
+    public ResponseEntity<?> BuyCart(@RequestHeader("Authorization") String jwt){
+        return cartService.buyCart(jwt);
+    }
+
+    @RequestMapping(value = "api/cart/", method = RequestMethod.GET)
+    public ResponseEntity<?> cartsToFinalize(){
+        return cartService.cartsToFinalize();
+    }
+
+    @RequestMapping(value = "api/cart/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> finalizeCart(@PathVariable Long id){
+        return cartService.finalizeCart(id);
+    }
+
+
     @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteFromCart(@PathVariable Long id, @RequestHeader("Authorization") String jwt){
         return cartService.deleteForCart(id,jwt);

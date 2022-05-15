@@ -24,23 +24,12 @@ public class Cart implements Serializable {
             strategy = GenerationType.AUTO
     )
     private Long id;
-
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private boolean ordered = false;
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.EAGER)
     private List<OrderItem> products = new ArrayList<>();
 
     @OneToOne
     @JsonIgnore
     private UserModel userModel;
-
-//    @Transient
-//    public Double getTotalOrderPrice() {
-//        double sum = 0D;
-//        List<OrderItem> orderProducts = getProducts();
-//        for (OrderItem p : orderProducts) {
-//            sum += p.getTotalPrice();
-//        }
-//        return sum;
-//    }
-
 
 }

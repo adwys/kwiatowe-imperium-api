@@ -23,12 +23,12 @@ public class CartController {
         return cartService.buyCart(jwt);
     }
 
-    @RequestMapping(value = "api/cart/", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/cart", method = RequestMethod.GET)
     public ResponseEntity<?> cartsToFinalize(){
         return cartService.cartsToFinalize();
     }
 
-    @RequestMapping(value = "api/cart/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/cart/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> finalizeCart(@PathVariable Long id){
         return cartService.finalizeCart(id);
     }

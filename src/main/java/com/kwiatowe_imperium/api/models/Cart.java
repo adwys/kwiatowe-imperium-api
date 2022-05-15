@@ -25,7 +25,7 @@ public class Cart implements Serializable {
     )
     private Long id;
     private boolean ordered = false;
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart",fetch = FetchType.LAZY, cascade = CascadeType.DETACH, orphanRemoval = true)
     private List<OrderItem> products = new ArrayList<>();
 
     @OneToOne

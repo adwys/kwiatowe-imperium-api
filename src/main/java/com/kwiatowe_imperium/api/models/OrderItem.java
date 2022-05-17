@@ -26,10 +26,10 @@ public class OrderItem implements Serializable {
     private Long id;
     private Long quantity;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(cascade=CascadeType.DETACH)
     private Product product;
 
-    @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade=CascadeType.DETACH,fetch = FetchType.EAGER)
     @JsonIgnore
     private Cart cart;
 

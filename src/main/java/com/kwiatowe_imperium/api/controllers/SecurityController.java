@@ -99,6 +99,15 @@ public class SecurityController {
         return userDetailsServices.MailSend(jwt,email);
     }
 
+    @RequestMapping(value = "/auth/me/mail",method = RequestMethod.GET)
+    private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt){
+        return userDetailsServices.allMailScheduled(jwt);
+    }
+    @RequestMapping(value = "/auth/me/mail/{id}",method = RequestMethod.DELETE)
+    private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt,@PathVariable Long id){
+        return userDetailsServices.cancelMail(jwt,id);
+    }
+
 
     @RequestMapping(value = "/auth/me/passwordChange",method = RequestMethod.PATCH)
     private ResponseEntity<?> updatePassword(@RequestHeader("Authorization") String jwt, @RequestBody ChangePasswordRequest request){

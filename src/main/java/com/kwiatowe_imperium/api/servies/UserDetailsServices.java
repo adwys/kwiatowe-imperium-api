@@ -86,6 +86,20 @@ public class UserDetailsServices implements UserDetailsService {
         return new ResponseEntity<>(userModel.get(),HttpStatus.OK);
     }
 
+    public ResponseEntity<?> allMailScheduled(String jwt){
+        UserModel userModel = jwtUser(jwt);
+        return new ResponseEntity<>(emailRepository.findAllBySendTo(userModel.getEmail()),HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> cancelMail(String jwt,Long id){
+        UserModel userModel = jwtUser(jwt);
+        if(emailRepository.existsById(id)){
+            emailRepository.delete(emailRepository.getById(id));
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     public ResponseEntity<?> MailSend(String jwt, Email email){
 

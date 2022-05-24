@@ -95,8 +95,8 @@ public class SecurityController {
     }
 
     @RequestMapping(value = "/auth/me/mail",method = RequestMethod.POST)
-    private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt, @RequestBody Date time){
-        return userDetailsServices.MailSend(jwt,time);
+    private ResponseEntity<?> updateUser(@RequestHeader("Authorization") String jwt, @RequestBody Email email){
+        return userDetailsServices.MailSend(jwt,email);
     }
 
 

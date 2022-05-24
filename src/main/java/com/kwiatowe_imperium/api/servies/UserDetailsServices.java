@@ -87,16 +87,14 @@ public class UserDetailsServices implements UserDetailsService {
     }
 
 
-    public ResponseEntity<?> MailSend(String jwt, Date time){
+    public ResponseEntity<?> MailSend(String jwt, Email email){
 
         UserModel userModel = jwtUser(jwt);
 
-        Email email = new Email(
-                null,
-                time,
-                "przypomnienie",
-                "przypominam o urodzinkach xd",
-                userModel.getEmail());
+        if(email.getSendTo() == null){
+            email.setSendTo(userModel.getEmail());
+        }
+
         emailRepository.save(email);
 
         return new ResponseEntity<>("date set",HttpStatus.OK);

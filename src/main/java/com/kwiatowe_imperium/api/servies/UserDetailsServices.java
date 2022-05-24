@@ -1,8 +1,10 @@
 package com.kwiatowe_imperium.api.servies;
 
+import com.kwiatowe_imperium.api.models.Email;
 import com.kwiatowe_imperium.api.models.Role;
 import com.kwiatowe_imperium.api.models.UserModel;
 import com.kwiatowe_imperium.api.models.UserResponse;
+import com.kwiatowe_imperium.api.repo.EmailRepository;
 import com.kwiatowe_imperium.api.repo.UserRepository;
 import com.kwiatowe_imperium.api.utilis.JwtUtil;
 import lombok.AllArgsConstructor;
@@ -33,6 +35,9 @@ public class UserDetailsServices implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private EmailRepository emailRepository;
 
     @Autowired
     private JwtUtil util;
@@ -86,23 +91,13 @@ public class UserDetailsServices implements UserDetailsService {
 
         UserModel userModel = jwtUser(jwt);
 
-        Calendar c = Calendar.getInstance();
-//        c.set(Calendar.YEAR,time.getYear());
-        c.set(Calendar.MONTH,time.getMonth());
-        c.set(Calendar.DAY_OF_MONTH,time.getDay());
-        c.set(Calendar.HOUR,14);
-        System.out.println(time.getHours());
-        c.set(Calendar.MINUTE,time.getMinutes());
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                emailSenderService.sendEmail(
-                        userModel.getEmail(),
-                        "Przypomnienie",
-                        c.getTime().toString());
-            }
-        }, c.getTime(), 86400000);
+        Email email = new Email(
+                null,
+                time,
+                "przypomnienie",
+                "przypominam o urodzinkach xd",
+                userModel.getEmail());
+        emailRepository.save(email);
 
         return new ResponseEntity<>("date set",HttpStatus.OK);
     }

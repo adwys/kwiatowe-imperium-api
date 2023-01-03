@@ -32,7 +32,6 @@ public class EmailCheckJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
-        System.out.println("dupa");
         JobDataMap jobDataMap = context.getMergedJobDataMap();
         emailRepository = (EmailRepository) jobDataMap.get("emailRepository");
         emailSenderService = (EmailSenderService) jobDataMap.get("emailSenderService");

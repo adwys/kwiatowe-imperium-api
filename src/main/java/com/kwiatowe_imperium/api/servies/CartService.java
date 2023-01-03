@@ -2,10 +2,7 @@ package com.kwiatowe_imperium.api.servies;
 
 
 import com.kwiatowe_imperium.api.models.*;
-import com.kwiatowe_imperium.api.repo.CartRepository;
-import com.kwiatowe_imperium.api.repo.OrderItemRepository;
-import com.kwiatowe_imperium.api.repo.ProductRepository;
-import com.kwiatowe_imperium.api.repo.UserRepository;
+import com.kwiatowe_imperium.api.repo.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +27,8 @@ public class CartService {
     OrderItemRepository orderItemRepository;
 
     CartRepository cartRepository;
+
+    CartToFinalizeRepository cartToFinalizeRepository;
 
     private OrderItem getProduct(OrderItemRequest request) {
         Product product = null;
@@ -72,29 +71,36 @@ public class CartService {
 
     public ResponseEntity<?> buyCart(String jwt) {
         UserModel userModel = userDetailsServices.jwtUser(jwt);
+
+        CartToFinalize cartToFinalize = new CartToFinalize();
+        cartToFinalize.setCart(userModel.getCart());
+        cartToFinalize.setUserModel(userModel);
+
         userModel.getCart().setOrdered(true);
         userModel.getCart().setUserModel(null);
-        cartRepository.save(userModel.getCart());
+        repository.save(userModel);
+        cartToFinalizeRepository.save(cartToFinalize);
         userModel.setCart(new Cart());
 
-        repository.save(userModel);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(cartToFinalize,HttpStatus.OK);
     }
 
     public ResponseEntity<?> cartsToFinalize(){
 
-        return new ResponseEntity<>(cartRepository.findAllByOrderedTrue() ,HttpStatus.OK);
+        return new ResponseEntity<>(cartToFinalizeRepository.findAll() ,HttpStatus.OK);
     }
 
     public ResponseEntity<?> finalizeCart(Long id){
-        Cart cart;
+        CartToFinalize cart;
         try {
-            cart = cartRepository.findById(id).get();
+            cart = cartToFinalizeRepository.findById(id).get();
+            cartRepository.delete(cart.getCart());
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        cartRepository.delete(cart);
+        cartToFinalizeRepository.delete(cart);
+
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
